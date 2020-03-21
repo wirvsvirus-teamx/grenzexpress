@@ -1,7 +1,7 @@
 // FIXME: This is only here until the controller is not a stub anymore
 /* eslint-disable @typescript-eslint/no-empty-interface */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { IsString } from 'class-validator';
+import { IsBase64 } from 'class-validator';
 import {
   Body, Delete,
   Get, HeaderParam,
@@ -19,25 +19,20 @@ export interface PutResponse {
 }
 
 export class PutRequestBody {
-  @IsString()
+  @IsBase64()
   newData!: string;
-}
-
-export class DeleteRequestBody {
-  @IsString()
-  data!: string;
 }
 
 export interface DeleteResponse {
 
 }
 
-function extractSignatureFromAuthHeader(authHeader: string): string {
+function extractSignatureFromAuthHeader(authHeader: string): Buffer {
   const parts = authHeader.split(' ');
   if (parts.length !== 2 || parts[0] !== 'signature') {
     throw new Error('Malformed Authorization header');
   }
-  return parts[1];
+  return Buffer.from(parts[1], 'base64');
 }
 
 @JsonController('/blob')
@@ -67,7 +62,6 @@ export class PingController {
   async delete(
     @Logger() logger: Logger,
     @Param('publicKey') publicKey: string,
-    @Body() { data, ...other }: DeleteRequestBody,
     @HeaderParam('authorization') authHeader: string,
   ): Promise<DeleteResponse> {
     logger.debug(`Deleting data for public key ${publicKey}`);
