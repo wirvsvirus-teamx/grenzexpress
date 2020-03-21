@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { createContext, useContext, useState } from 'react';
 /* Pagination */
 type IPage = '/' | '/bp';
 
