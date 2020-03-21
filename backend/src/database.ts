@@ -1,10 +1,11 @@
+import path from 'path';
 import { createConnection } from 'typeorm';
 
 type ConnectionInfo = {
-  host?: string,
-  port?: number,
-  username: string,
-  password: string,
+  host?: string;
+  port?: number;
+  username: string;
+  password: string;
 };
 
 export async function getDatabaseConnection(connectionInfo: ConnectionInfo) {
@@ -18,7 +19,7 @@ export async function getDatabaseConnection(connectionInfo: ConnectionInfo) {
     synchronize: true,
     logging: false,
     entities: [
-      __dirname + '/entity/*.ts',
+      path.join(__dirname, '/entity/*.ts'),
     ],
   });
 }
