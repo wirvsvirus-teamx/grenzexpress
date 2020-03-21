@@ -1,3 +1,4 @@
+import { TextField } from '@material-ui/core';
 import React, { useEffect } from 'react';
 
 import { IQuestionProps } from '../../../../shared/types';
@@ -8,9 +9,6 @@ export const TextInput = ({ question, answer, setAnswer }: IQuestionProps<'text-
   }
 
   return (
-    <div>
-      <h2>{question.name}</h2>
-      <input type="text" value={answer ? answer.value : ''} onInput={(e) => setValue((e as any).target.value)} />
-    </div>
+    <TextField id="standard-basic" label={question.name} value={answer ? answer.value : ''} onInput={(e) => setValue((e as any).target.value)} />
   );
 };
