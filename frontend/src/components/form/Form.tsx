@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import {
   IAnswer, IForm, IQuestion,
 } from '../../../../shared/types';
-import { Link } from '../../contexts/Paging';
 import { useUser } from '../../contexts/User';
 import { questions } from '../../data/forms';
 import { ChoiceInput } from '../question-choice/Choice';
@@ -56,7 +56,7 @@ export const Form = ({ form }: { form: IForm }) => {
       <div>
         Done!
         <Link to="/">
-          <button type="button">Zurück zur Übersicht</button>
+          Zurück zur Übersicht
         </Link>
       </div>
     );
