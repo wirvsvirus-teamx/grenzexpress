@@ -1,4 +1,4 @@
-import './routes';
+import 'reflect-metadata';
 
 import cors from '@koa/cors';
 import config from 'config';
@@ -6,9 +6,9 @@ import { once } from 'events';
 import { createServer } from 'http';
 import App from 'koa';
 import koaBunyanLogger, { requestIdContext, requestLogger } from 'koa-bunyan-logger';
+import { useKoaServer } from 'routing-controllers';
 
 import { logger } from './logger';
-import { router } from './router';
 
 async function main(): Promise<void> {
   const app = new App();
@@ -29,8 +29,20 @@ async function main(): Promise<void> {
   }));
   app.use(requestLogger());
 
-  app.use(router.routes());
-  app.use(router.allowedMethods());
+  useKoaServer(app, {
+    cors: false,
+    routePrefix: '/api',
+    controllers: [`${__dirname}/controllers/*`],
+    validation: {
+      whitelist: true,
+      forbidUnknownValues: true,
+    },
+    defaults: {
+      paramOptions: {
+        required: true,
+      },
+    },
+  });
 
   const server = createServer(app.callback());
   const listening = once(server, 'listening');
