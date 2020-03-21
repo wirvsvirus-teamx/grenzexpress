@@ -8,11 +8,12 @@ import App from 'koa';
 import koaBunyanLogger, { requestIdContext, requestLogger } from 'koa-bunyan-logger';
 import { useKoaServer } from 'routing-controllers';
 
-import { logger } from './logger';
 import { getDatabaseConnection } from './database';
+import { logger } from './logger';
 
 async function main(): Promise<void> {
-	const dbConnection = await getDatabaseConnection({username: 'test', password: 'test'});
+  const dbConnection = await getDatabaseConnection({ username: 'test', password: 'test' });
+
   const app = new App();
 
   app.use(cors());
