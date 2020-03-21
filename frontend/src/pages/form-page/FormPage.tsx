@@ -1,6 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { Box, Button, Typography } from '@material-ui/core';
-import React, { FunctionComponent, useCallback, useState } from 'react';
+import React, {
+  FunctionComponent, useCallback, useEffect, useState,
+} from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import { DateInput, Signature } from '../../components';
@@ -135,6 +137,10 @@ const useAnswers = (form: string) => {
 
     return initial;
   });
+
+  useEffect(() => {
+    localStorage.setItem(`grenzexpress-${form}`, JSON.stringify(answers));
+  }, [form, answers]);
 
   const setAnswer = useCallback((answer: IAnswer) => {
     setAnswers((a) => ({ ...a, [answer.id]: answer }));
