@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/interface-name-prefix */
 // A unique identifier across systems:
 export type UID = string;
 
@@ -26,11 +27,14 @@ export type IQuestionType = {
 };
 
 // A question:
-// Either use IQuestion to refer to questions in general or IQuestion<"text-input"> to refer to a specific question type
+// Either use IQuestion to refer to questions in general
+// or IQuestion<"text-input"> to refer to a specific question type
 export type IQuestion<S extends keyof IQuestionType = keyof IQuestionType> = IQuestionType[S] & {
   type: S;
   id: UID;
-  shared: boolean; // wether the question might appear in multiple forms, at different times, but the answer would be the same
+  // wether the question might appear in multiple forms, at different times,
+  // but the answer would be the same
+  shared: boolean;
 };
 
 // Possible answers to questions:
@@ -61,7 +65,7 @@ export type IAnswer<S extends IQuestion['type'] = IQuestion['type']> = IAnswerTy
   id: string /* = question.id*/;
 };
 
-// A Pgae shows questions in a sorted way:
+// A Page shows questions in a sorted way:
 export interface IPage {
   title: string;
   description?: string;
@@ -96,7 +100,9 @@ export type IFormAnswer = {
 // the encrypted representation of a form
 export type IEncryptedFormAnswer = {
   userUid: IUser['uid'];
-  uid: string; // answers can e retrieved on the server with this uid (by authorized personell), and can then be decrypted using the per answers key
+  uid: string;
+  // answers can e retrieved on the server with this uid (by authorized personell),
+  // and can then be decrypted using the per answers key
   id: IForm['id'];
   answers: string; // the encrypted IAnswer[]s
 };
