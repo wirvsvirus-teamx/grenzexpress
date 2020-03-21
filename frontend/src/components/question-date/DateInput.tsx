@@ -1,18 +1,99 @@
-import React from 'react';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import React, { ChangeEvent, useState } from 'react';
 
 import { IQuestionProps } from '../../../../shared/types';
-import { useInput } from '../../hooks/input';
 
-export const DateInput = ({ question, answer }: IQuestionProps<'date-input'>) => {
-  const [value, answerEl] = useInput({ placeholder: '', type: 'date' });
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  formControl: {
+    marginRight: theme.spacing(1),
+    minWidth: 90,
+  },
+}));
+
+export const DateInput = (_: Partial<IQuestionProps<'date-input'>>) => {
+  const classes = useStyles();
+  const [year, setYear] = useState<number>();
+  const [month, setMonth] = useState<number>();
+  const [day, setDay] = useState<number>();
+
+  type SelectChangeEvent = ChangeEvent<{ value: any }>;
+
+  const handleDayChange = (event: SelectChangeEvent) => {
+    setDay(event.target.value);
+  };
+
+  const handleMonthChange = (event: SelectChangeEvent) => {
+    setMonth(event.target.value);
+  };
+
+  const handleYearChange = (event: SelectChangeEvent) => {
+    setYear(event.target.value);
+  };
+
+  const generateYears = () => {
+    const years = [];
+    for (let i = 2020; i > 1900; i--) {
+      years.push(<MenuItem key={i} value={i}>{i}</MenuItem>);
+    }
+    return years;
+  };
+
+  const generateMonth = () => {
+    const months = [];
+    for (let i = 1; i <= 12; i++) {
+      months.push(<MenuItem key={i} value={i}>{i}</MenuItem>);
+    }
+    return months;
+  };
+
+  const generateDay = () => {
+    const days = [];
+    for (let i = 1; i <= 31; i++) {
+      days.push(<MenuItem key={i} value={i}>{i}</MenuItem>);
+    }
+    return days;
+  };
 
   return (
     <div>
-      <h2>{question.name}</h2>
-      {answerEl}
-      <button type="button" onClick={() => answer({ id: question.id, type: 'date-input', value })}>
-        Next
-      </button>
+      <p>Geburtsdatum:</p>
+      <FormControl className={classes.formControl}>
+        <InputLabel id="day-label">Tag</InputLabel>
+        <Select
+          id="day"
+          labelId="day-label"
+          value={day ?? ''}
+          onChange={handleDayChange}
+        >
+          {generateDay()}
+        </Select>
+      </FormControl>
+      <FormControl className={classes.formControl}>
+        <InputLabel id="month-label">Monat</InputLabel>
+        <Select
+          id="month"
+          labelId="month-label"
+          value={month ?? ''}
+          onChange={handleMonthChange}
+        >
+          {generateMonth()}
+        </Select>
+      </FormControl>
+      <FormControl className={classes.formControl}>
+        <InputLabel id="year-label">Jahr</InputLabel>
+        <Select
+          id="year"
+          labelId="year-label"
+          value={year ?? ''}
+          onChange={handleYearChange}
+        >
+          {generateYears()}
+        </Select>
+      </FormControl>
     </div>
   );
 };
