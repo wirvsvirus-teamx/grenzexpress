@@ -27,7 +27,9 @@ export const DateInput = ({ question, answer, setAnswer }: IQuestionProps<'date-
 
   const value = answer?.value;
 
-  console.log({ value, day, month, year });
+  console.log({
+    value, day, month, year,
+  });
 
   useEffect(() => {
     if (
