@@ -31,10 +31,6 @@ export type IQuestion<S extends keyof IQuestionType = keyof IQuestionType> = IQu
   type: S;
   id: UID;
   shared: boolean; // wether the question might appear in multiple forms, at different times, but the answer would be the same
-  // Questions that are not needed may be skipped,
-  // That way, we can create "question trees", e.g.
-  // if A was answered with yes, B is needed, if A was answered with no, C is needed and so on
-  isNeeded?: (previousAnswers: IAnswer[]) => boolean;
 };
 
 // Possible answers to questions:
@@ -65,12 +61,26 @@ export type IAnswer<S extends IQuestion["type"] = IQuestion["type"]> = IAnswerTy
   id: string /*= question.id*/;
 };
 
-// A form is a collection of questions
+// A Pgae shows questions in a sorted way:
+interface IPage {
+  title: string;
+  questions: IQuestion["id"][];
+  // Questions that are not needed may be skipped,
+  // That way, we can create "question trees", e.g.
+  // if A was answered with yes, B is needed, if A was answered with no, C is needed and so on
+  isNeeded?: (getPrevious: <T extends IQuestion["type"]>(answerID: string) => IAnswer<T>) => boolean;
+}
+
+// A form is a collection of questions, grouped as pages
 export type IForm = {
   id: string;
   title: string;
-  questions: IQuestion["id"][];
-  validations: Array<(form: IFormAnswer) => "valid" | "invalid" | "unknown">;
+  pages: IPage[];
+
+  validate: (getAnswer: <T extends IQuestion["type"]>(answerID: string) => IAnswer<T>) => {
+    state: "valid" | "invalid" | "unknown"
+    message: string;
+  };
 };
 
 // answers a certain form
@@ -105,5 +115,5 @@ export type IUser = Omit<IUserData, "secret">;
 
 export type IQuestionProps<Q extends IQuestion["type"]> = {
   question: IQuestion<Q>;
-  answer(answer: IAnswer<Q>);
+  answer(answer: IAnswer<Q>): any;
 }
