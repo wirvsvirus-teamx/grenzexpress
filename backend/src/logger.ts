@@ -1,5 +1,6 @@
 import { createLogger, stdSerializers } from 'bunyan';
 import config from 'config';
+import { createParamDecorator } from 'routing-controllers';
 
 export const logger = createLogger({
   name: 'backend',
@@ -18,3 +19,11 @@ export const logger = createLogger({
     },
   },
 });
+
+export type Logger = typeof logger;
+export function Logger(): (object: any, method: string, index: number) => void {
+  return createParamDecorator({
+    required: true,
+    value: (action) => action.context.log,
+  });
+}
