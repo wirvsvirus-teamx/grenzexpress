@@ -4,12 +4,12 @@ import {
   IAnswer, IForm, IFormAnswer, IQuestion,
 } from '../../../../shared/types';
 import { questions } from '../../data/forms';
+import { ChoiceInput } from '../question-choice/Choice';
+import { DateInput } from '../question-date/DateInput';
+import { FormInput } from '../question-form/FormInput';
 import { NumberInput } from '../question-number-input/NumberInput';
 import { TextInput } from '../question-text-input/TextInput';
 import { YesNo } from '../question-yesno/YesNo';
-import { DateInput } from 'components/question-date/DateInput';
-import { ChoiceInput } from 'components/question-choice/Choice';
-import { FormInput } from 'components/question-form/FormInput';
 
 export const Form = ({ form, done }: { form: IForm; done(formAnswer: IFormAnswer): void }) => {
   const [current, setCurrent] = React.useState<number>(0);
@@ -19,7 +19,11 @@ export const Form = ({ form, done }: { form: IForm; done(formAnswer: IFormAnswer
 
   React.useEffect(() => {
     if (question) {
-      if (question.isNeeded && !question.isNeeded(answers)) setCurrent((curr) => curr + 1);
+      console.log('question needed?');
+      if (question.isNeeded && !question.isNeeded(answers)) {
+        console.log('yes!');
+        setCurrent((curr) => curr + 1);
+      }
     }
   }, [answers, question]);
 

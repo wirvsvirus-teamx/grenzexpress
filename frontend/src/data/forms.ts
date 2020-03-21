@@ -1,4 +1,4 @@
-import { IForm, IQuestion } from '../../../shared/types';
+import { IForm, IQuestion, IAnswer } from '../../../shared/types';
 
 export const questions: IQuestion[] = [
   {
@@ -23,7 +23,7 @@ export const questions: IQuestion[] = [
     id: 'residency',
     type: 'multiple-choice',
     question: 'Welche Staatsangehörigkeit besitzen sie?',
-    choices: ['deutch', 'französisch'],
+    choices: ['deutsch', 'französisch'],
     shared: true,
   },
   {
@@ -31,8 +31,8 @@ export const questions: IQuestion[] = [
     type: 'yes-no',
     question: 'Reisen sie heute alleine?',
     isNeeded(previousAnswers) {
-      const german = previousAnswers.find((it) => it.id === 'residency');
-      return !!german;
+      const residency = previousAnswers.find((it) => it.id === 'residency') as IAnswer<'multiple-choice'>;
+      return !residency || residency.choice !== 'deutsch';
     },
     shared: false,
   },
