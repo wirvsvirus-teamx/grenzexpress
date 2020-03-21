@@ -317,3 +317,10 @@ export const forms: IForm[] = [
     },
   },
 ];
+
+export function getForm(id: string): IForm | undefined {
+  for (const form of forms) {
+    if (form.id === id) return form;
+  }
+  return undefined;
+}

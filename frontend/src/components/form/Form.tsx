@@ -1,11 +1,8 @@
-import { FinishedForm } from 'components/finished-form/FinishedForm';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import {
-  IAnswer, IForm,
-} from '../../../../shared/types';
 import { useUser } from '../../contexts/User';
+import { FinishedForm } from '../finished-form/FinishedForm';
 import { Page } from '../page/Page';
 
 export const Form = ({ form }: { form: IForm }) => {

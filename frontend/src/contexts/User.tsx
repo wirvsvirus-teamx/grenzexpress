@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 
 import { IFormAnswer, IUserData } from '../../../shared/types';
 
@@ -11,13 +11,13 @@ const defaultUser = {
 };
 
 const UserContext = React.createContext<
-{ user: IUserData; addFormAnswer(answer: IFormAnswer): void }
-  >({
-    user: defaultUser,
-    addFormAnswer() {
-      throw new Error('Missing user context');
-    },
-  });
+  { user: IUserData; addFormAnswer(answer: IFormAnswer): void }
+    >({
+      user: defaultUser,
+      addFormAnswer() {
+        throw new Error('Missing user context');
+      },
+    });
 
 export const useUser = () => useContext(UserContext);
 
