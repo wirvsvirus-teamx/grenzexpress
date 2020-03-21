@@ -1,43 +1,61 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
-  IAnswer, IForm, IQuestion,
+  IAnswer, IForm,
 } from '../../../../shared/types';
 import { useUser } from '../../contexts/User';
-import { questions } from '../../data/forms';
-import { ChoiceInput } from '../question-choice/Choice';
-import { DateInput } from '../question-date/DateInput';
-import { FormInput } from '../question-form/FormInput';
-import { NumberInput } from '../question-number-input/NumberInput';
-import { TextInput } from '../question-text-input/TextInput';
-import { YesNo } from '../question-yesno/YesNo';
+import { Page } from '../page/Page';
+import { FinishedForm } from 'components/finished-form/FinishedForm';
 
 export const Form = ({ form }: { form: IForm }) => {
-  const [current, setCurrent] = React.useState<number>(0);
-  const [answers, setAnswers] = useState<IAnswer[]>([]);
+  const [answers, setAnswers] = useState<{ [id: string]: IAnswer }>({});
   const [submitted, setSubmitted] = useState(false);
 
-  const questionID = form.questions[current];
-  const question = questions.find((it) => it.id === questionID);
+  const [pageIndex, setPageIndex] = useState(0);
+  const page = form.pages[pageIndex];
+
+  const prevEnabled = pageIndex > 0;
+  const nextEnabled = page && page.questions.every((question) => question in answers);
+
+  const setAnswer = useCallback((answer: IAnswer) => {
+    setAnswers((previousAnswers) => {
+      const newAnswers = { ...previousAnswers };
+      newAnswers[answer.id] = answer;
+      return newAnswers;
+    });
+  }, []);
 
   const { addFormAnswer } = useUser();
-  React.useEffect(() => {
-    if (question) {
-      console.log('question needed?');
-      if (question.isNeeded && !question.isNeeded(answers)) {
-        console.log('yes!');
-        setCurrent((curr) => curr + 1);
-      }
-    }
-  }, [answers, question]);
+ 
+  const nextPage = () => setPageIndex((index) => {
+    do {
+      index += 1;
+    } while (
+      index < form.pages.length
+      && form.pages[index].isNeeded
+      && !(form.pages[index] as any).isNeeded((answerID: string) => answers[answerID] as any)
+    );
+    return index;
+  });
+
+  const prevPage = () => setPageIndex((index) => {
+    do {
+      index -= 1;
+    } while (
+      index > 0
+      && form.pages[index].isNeeded
+      && !(form.pages[index] as any).isNeeded((answerID: string) => answers[answerID] as any)
+    );
+    return index;
+  });
 
   function submit() {
-    if (current >= form.questions.length && !submitted) {
+    if (!submitted) {
       setSubmitted(true);
 
       addFormAnswer({
-        answers,
+        answers: Object.values(answers),
         id: form.id,
         key: 'whatever',
         uid: 'test',
@@ -46,26 +64,38 @@ export const Form = ({ form }: { form: IForm }) => {
     }
   }
 
-  function answer(an: IAnswer) {
-    setAnswers((a) => [...a, an]);
-    setCurrent((curr) => curr + 1);
-  }
-
   if (submitted) {
     return (
       <div>
-        Done!
+        Hochgeladen!
         <Link to="/">
           Zurück zur Übersicht
         </Link>
+        <FinishedForm formAnswer={{
+          answers: Object.values(answers),
+          id: form.id,
+          key: 'whatever',
+          uid: 'test',
+          userUid: 'test', // TODO
+        }}
+        />
       </div>
     );
   }
 
-  if (!question) {
+  if (pageIndex >= form.pages.length) {
     return (
       <div>
-        <button type="button" onClick={submit}>Absenden</button>
+        <button type="button" onClick={submit}>Einreichen</button>
+
+        <FinishedForm formAnswer={{
+          answers: Object.values(answers),
+          id: form.id,
+          key: 'whatever',
+          uid: 'test',
+          userUid: 'test', // TODO
+        }}
+        />
       </div>
     );
   }
@@ -74,14 +104,9 @@ export const Form = ({ form }: { form: IForm }) => {
     <div>
       <h2>{form.title}</h2>
 
-      <div key={question.id}>
-        {question.type === 'yes-no' && <YesNo answer={answer} question={question as IQuestion<'yes-no'>} />}
-        {question.type === 'text-input' && <TextInput answer={answer} question={question as IQuestion<'text-input'>} />}
-        {question.type === 'number-input' && <NumberInput answer={answer} question={question as IQuestion<'number-input'>} />}
-        {question.type === 'date-input' && <DateInput answer={answer} question={question as IQuestion<'date-input'>} />}
-        {question.type === 'multiple-choice' && <ChoiceInput answer={answer} question={question as IQuestion<'multiple-choice'>} />}
-        {question.type === 'upload-form' && <FormInput answer={answer} question={question as IQuestion<'upload-form'>} />}
-      </div>
+      <Page answer={setAnswer} page={page} />
+      {prevEnabled && <button type="button" onClick={prevPage}>Zurück</button>}
+      {nextEnabled && <button type="button" onClick={nextPage}>Weiter</button>}
     </div>
   );
 };

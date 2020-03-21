@@ -62,7 +62,7 @@ export type IAnswer<S extends IQuestion["type"] = IQuestion["type"]> = IAnswerTy
 };
 
 // A Pgae shows questions in a sorted way:
-interface IPage {
+export interface IPage {
   title: string;
   questions: IQuestion["id"][];
   // Questions that are not needed may be skipped,

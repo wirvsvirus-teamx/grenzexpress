@@ -178,14 +178,14 @@ export const forms: IForm[] = [
         title: 'Wohnsitz',
         questions: ['residency', 'address', 'city', 'postal-code'],
         isNeeded(get) {
-          return !get<'yes-no'>('nationality').yes;
+          return get<'multiple-choice'>('nationality').choice !== 'deutsch';
         },
       },
       {
         title: 'Grund der Einreise',
         questions: ['other-reason'],
         isNeeded(get) {
-          return !get<'yes-no'>('nationality').yes;
+          return get<'multiple-choice'>('nationality').choice !== 'deutsch';
         },
       },
       {
@@ -193,6 +193,7 @@ export const forms: IForm[] = [
         questions: ['urgent'],
         isNeeded(get) {
           const reason = get<'multiple-choice'>('other-reason');
+          console.log(`notw. ${reason}`);
           return reason && [
             'Ich habe einen Arzttermin',
             'Ich möchte Familienangehörige betreuen',
