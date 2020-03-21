@@ -8,7 +8,7 @@ export const LoadForm = () => {
   const [publicKey, secret] = data.split('@');
 
   // Load some magic from server
-  
+
   const result: IFormAnswer = {
     id: 'pass-border',
     key: '?',

@@ -1,5 +1,5 @@
 import {
-  Card, CardActionArea, CardActions, CardContent, CardMedia, Container, Grid, Typography,
+  Card, CardActionArea, CardActions, CardContent, CardMedia, Container, Typography,
 } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import QRCode from 'qrcode.react';
@@ -27,7 +27,8 @@ export const ShowQR = () => (
             Zeige diesen QR Code vor!
           </Typography>
           <Typography color="textSecondary" component="p" variant="body2">
-            Im QR Code ist ein Schlüssel, der dem Bundespolizisten Zugriff auf deine persönlichen Daten gewährt.
+            Im QR Code ist ein Schlüssel,
+            der dem Bundespolizisten Zugriff auf deine persönlichen Daten gewährt.
             Die Daten werden Ende zu Ende verschlüsselt, sind also nicht auf dem Server lesbar.
           </Typography>
         </CardContent>
