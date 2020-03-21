@@ -1,6 +1,6 @@
 import React, { createContext } from 'react';
 /* Pagination */
-type IPage = '/' | '/bp';
+type IPage = '/' | '/bp' | string;
 
 const PageContext = createContext<{ page: IPage; setPage(p: IPage): void }>({ page: '/', setPage() { throw new Error('use page context'); } });
 
