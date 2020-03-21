@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BrowserRouter as Router,  Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import { Form } from '../components/form/Form';
 import { WithUser } from '../contexts/User';
