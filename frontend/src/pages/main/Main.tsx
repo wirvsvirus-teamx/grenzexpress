@@ -1,10 +1,9 @@
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import QRCode from 'qrcode.react';
 import * as React from 'react';
 
 import css from './Main.module.scss';
-
-const QRCode = require('qrcode.react');
 
 export const Main = () => (
   <div className={css.app}>
