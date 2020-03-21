@@ -14,7 +14,13 @@ export const ShowQR = () => (
     <Card>
       <CardActionArea>
         <CardMedia>
-          <QRCode value={window.location.hash.slice(1)} size={396} style={{ width: "396px", height: "396px", maxWidth: "100%", maxHeight: "100%" }} />
+          <QRCode
+            size={396}
+            style={{
+              width: '396px', height: '396px', maxWidth: '100%', maxHeight: '100%',
+            }}
+            value={window.location.hash.slice(1)}
+          />
         </CardMedia>
         <CardContent>
           <Typography component="h2" gutterBottom variant="h5">
@@ -27,11 +33,8 @@ export const ShowQR = () => (
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button color="primary" size="small">
-          Share
-        </Button>
-        <Button color="primary" size="small">
-          Learn More
+        <Button color="primary" size="small" onClick={() => window.history.back()}>
+          Zurück
         </Button>
       </CardActions>
     </Card>
