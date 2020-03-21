@@ -4,6 +4,8 @@ import * as React from 'react';
 
 import css from './Main.module.scss';
 
+var QRCode = require('qrcode.react');
+
 export const Main = () => (
   <div className={css.app}>
     <header className={css.header}>
@@ -31,6 +33,8 @@ export const Main = () => (
       <TextField id="standard-basic" label="Staatsangehörigkeit" />
       <br />
       <Button variant="contained">Weiter</Button>
+      <br />
+      <QRCode value="https://www.google.com" />
     </main>
   </div>
 );
