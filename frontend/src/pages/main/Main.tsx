@@ -11,7 +11,8 @@ export const Main = () => (
     </header>
     <main>
       <p>
-        Hiermit wird bescheinigt, dass die ausgeführte Person zwischen Wohnung und Arbeitsstätte über die deutsche
+        Hiermit wird bescheinigt,
+        dass die ausgeführte Person zwischen Wohnung und Arbeitsstätte über die deutsche
         Bundesgrenze pendeln muss.
       </p>
       <h4>Wohnung</h4>
