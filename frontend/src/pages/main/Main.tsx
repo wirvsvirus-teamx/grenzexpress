@@ -4,7 +4,7 @@ import * as React from 'react';
 
 import css from './Main.module.scss';
 
-var QRCode = require('qrcode.react');
+const QRCode = require('qrcode.react');
 
 export const Main = () => (
   <div className={css.app}>
