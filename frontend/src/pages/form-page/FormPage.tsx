@@ -99,8 +99,8 @@ export const Page = ({ page, form, step }: { page: IPage; form: IForm; step: num
       </Box>
 
       <Box mt={3}>
-        <Button disabled={!nextEnabled} variant="contained" onClick={prevPage}>Zurück</Button>
-        <Button disabled={!prevEnabled} variant="contained" onClick={nextPage}>Weiter</Button>
+        <Button disabled={!prevEnabled} variant="contained" onClick={prevPage}>Zurück</Button>
+        <Button disabled={!nextEnabled} variant="contained" onClick={nextPage}>Weiter</Button>
       </Box>
     </Layout>
   );
