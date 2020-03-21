@@ -1,4 +1,5 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import { FinishedForm } from 'components/finished-form/FinishedForm';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
@@ -6,7 +7,6 @@ import {
 } from '../../../../shared/types';
 import { useUser } from '../../contexts/User';
 import { Page } from '../page/Page';
-import { FinishedForm } from 'components/finished-form/FinishedForm';
 
 export const Form = ({ form }: { form: IForm }) => {
   const [answers, setAnswers] = useState<{ [id: string]: IAnswer }>({});
@@ -27,7 +27,7 @@ export const Form = ({ form }: { form: IForm }) => {
   }, []);
 
   const { addFormAnswer } = useUser();
- 
+
   const nextPage = () => setPageIndex((index) => {
     do {
       index += 1;
@@ -104,7 +104,7 @@ export const Form = ({ form }: { form: IForm }) => {
     <div>
       <h2>{form.title}</h2>
 
-      <Page answer={setAnswer} page={page} />
+      <Page answers={answers} page={page} setAnswer={setAnswer} />
       {prevEnabled && <button type="button" onClick={prevPage}>Zurück</button>}
       {nextEnabled && <button type="button" onClick={nextPage}>Weiter</button>}
     </div>

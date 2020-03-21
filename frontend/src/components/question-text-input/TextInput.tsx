@@ -1,19 +1,16 @@
 import React, { useEffect } from 'react';
 
 import { IQuestionProps } from '../../../../shared/types';
-import { useInput } from '../../hooks/input';
 
-export const TextInput = ({ question, answer }: IQuestionProps<'text-input'>) => {
-  const [value, answerEl] = useInput({ placeholder: '', type: 'text' });
-
-  useEffect(() => {
-    if (value) answer({ id: question.id, type: 'text-input', value });
-  }, [answer, question.id, value]);
+export const TextInput = ({ question, answer, setAnswer }: IQuestionProps<'text-input'>) => {
+  function setValue(value: string) {
+    if (value) setAnswer({ id: question.id, type: 'text-input', value });
+  }
 
   return (
     <div>
       <h2>{question.name}</h2>
-      {answerEl}
+      <input type="text" value={answer ? answer.value : ''} onInput={(e) => setValue((e as any).target.value)} />
     </div>
   );
 };

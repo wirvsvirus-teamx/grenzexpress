@@ -115,5 +115,6 @@ export type IUser = Omit<IUserData, "secret">;
 
 export type IQuestionProps<Q extends IQuestion["type"]> = {
   question: IQuestion<Q>;
-  answer(answer: IAnswer<Q>): any;
+  answer?: IAnswer<Q>;
+  setAnswer(answer: IAnswer<Q>): any;
 }
