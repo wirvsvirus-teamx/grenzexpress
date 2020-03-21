@@ -2,7 +2,7 @@ import * as React from 'react';
 /* Pagination */
 type IPage = '/' | '/bp';
 
-const PageContext = React.createContext<{ page: IPage; setPage(p: IPage): void }>({ page: '/', setPage() { } });
+const PageContext = createContext<{ page: IPage; setPage(p: IPage): void }>({ page: '/', setPage() { } });
 
 export const WithPagination = ({ children }: React.PropsWithChildren<{}>) => {
   const [page, _setPage] = React.useState<IPage>(window.location.pathname as IPage);
