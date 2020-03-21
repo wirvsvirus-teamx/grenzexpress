@@ -61,10 +61,11 @@ module.exports = {
     'no-useless-constructor': 'off',
     'spaced-comment': ['error', 'always', { 'markers': ['/'] }],
 
+    '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
-    '@typescript-eslint/explicit-function-return-type': 'off',
+
 
     'import/no-default-export': 'error',
     'import/prefer-default-export': 'off',
