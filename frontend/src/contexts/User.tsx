@@ -2,16 +2,18 @@ import React, { useContext, useState } from 'react';
 
 import { IFormAnswer, IUserData } from '../../../shared/types';
 
+const defaultUser = {
+  uid: '?',
+  answeredForms: [],
+  secret: '?',
+  sharedAnswers: [],
+  token: '?',
+};
+
 const UserContext = React.createContext<
 { user: IUserData; addFormAnswer(answer: IFormAnswer): void }
   >({
-    user: {
-      answeredForms: [],
-      secret: '?',
-      sharedAnswers: [],
-      token: '?',
-      uid: '?',
-    },
+    user: defaultUser,
     addFormAnswer() {
       throw new Error('Missing user context');
     },
@@ -20,13 +22,20 @@ const UserContext = React.createContext<
 export const useUser = () => useContext(UserContext);
 
 export const WithUser = ({ children }: React.PropsWithChildren<{}>) => {
-  const [user, setUser] = React.useState<IUserData>({
-    uid: '?',
-    answeredForms: [],
-    secret: '?',
-    sharedAnswers: [],
-    token: '?',
+  const [user, setUser] = React.useState<IUserData>(() => {
+    let initialUser = defaultUser;
+    try {
+      initialUser = JSON.parse(localStorage.getItem('grenzexpress-user') || '');
+    } catch {
+      console.log('could not load user, initializing');
+    }
+
+    return initialUser;
   });
+
+  React.useEffect(() => {
+    localStorage.setItem('grenzexpress-user', JSON.stringify(user));
+  }, [user]);
 
   function addFormAnswer(answer: IFormAnswer) {
     setUser((u) => ({ ...u, answeredForms: [...u.answeredForms, answer] }));

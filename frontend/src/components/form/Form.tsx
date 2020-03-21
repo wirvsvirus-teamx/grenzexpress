@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 
 import {
-  IAnswer, IForm, IFormAnswer, IQuestion,
+  IAnswer, IForm, IQuestion,
 } from '../../../../shared/types';
+import { Link } from '../../contexts/Paging';
+import { useUser } from '../../contexts/User';
 import { questions } from '../../data/forms';
 import { ChoiceInput } from '../question-choice/Choice';
 import { DateInput } from '../question-date/DateInput';
@@ -10,14 +12,16 @@ import { FormInput } from '../question-form/FormInput';
 import { NumberInput } from '../question-number-input/NumberInput';
 import { TextInput } from '../question-text-input/TextInput';
 import { YesNo } from '../question-yesno/YesNo';
-import { Link } from 'contexts/Paging';
 
-export const Form = ({ form, done }: { form: IForm; done(formAnswer: IFormAnswer): void }) => {
+export const Form = ({ form }: { form: IForm }) => {
   const [current, setCurrent] = React.useState<number>(0);
   const [answers, setAnswers] = useState<IAnswer[]>([]);
+  const [submitted, setSubmitted] = useState(false);
+
   const questionID = form.questions[current];
   const question = questions.find((it) => it.id === questionID);
-
+  
+  const { addFormAnswer } = useUser();
   React.useEffect(() => {
     if (question) {
       console.log('question needed?');
@@ -28,9 +32,11 @@ export const Form = ({ form, done }: { form: IForm; done(formAnswer: IFormAnswer
     }
   }, [answers, question]);
 
-  React.useEffect(() => {
-    if (current >= form.questions.length) {
-      done({
+  function submit() {
+    if (current >= form.questions.length && !submitted) {
+      setSubmitted(true);
+
+      addFormAnswer({
         answers,
         id: form.id,
         key: 'whatever',
@@ -38,14 +44,15 @@ export const Form = ({ form, done }: { form: IForm; done(formAnswer: IFormAnswer
         userUid: 'test', // TODO
       });
     }
-  }, [answers, current, done, form.id, form.questions.length]);
+  }
 
   function answer(an: IAnswer) {
     setAnswers((a) => [...a, an]);
     setCurrent((curr) => curr + 1);
   }
 
-  if (!question) {
+
+  if (submitted) {
     return (
       <div>
         Done!
@@ -54,6 +61,14 @@ export const Form = ({ form, done }: { form: IForm; done(formAnswer: IFormAnswer
         </Link>
       </div>
     );
+  }
+  
+  if(!question) {
+    return (
+      <div>
+        <button type="button" onClick={submit}>Absenden</button>
+      </div>
+    )
   }
 
   return (
