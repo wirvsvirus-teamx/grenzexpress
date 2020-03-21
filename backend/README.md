@@ -18,3 +18,8 @@ are located in the `src/entity/` directory.
 
 This project uses [koa](https://www.npmjs.com/package/koa) as router. All routes and their
 controllers contained in the `src/controllers/` directory.
+Koa then uses [routing-controllers](https://www.npmjs.com/package/routing-controllers) for matching
+routes to controllers and [class-validator](https://www.npmjs.com/package/class-validator) for
+validating request objects against pre-defined classes.
+
+For logging, [bunyan](https://www.npmjs.com/package/bunyan) is used.
