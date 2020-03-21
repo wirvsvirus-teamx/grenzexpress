@@ -1,5 +1,3 @@
-// FIXME: This is only here until the controller is not a stub anymore
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { IsBase64 } from 'class-validator';
 import {
   Body, Delete,
