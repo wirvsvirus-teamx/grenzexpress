@@ -16,16 +16,18 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 export const DateInput = ({ question, answer, setAnswer }: IQuestionProps<'date-input'>) => {
   const classes = useStyles();
   const [year, setYear] = useState<number | false | undefined>(
-    () => (!!answer && !!answer.value && new Date(answer.value).getFullYear()),
+    () => (!!answer && !!answer.value && new Date(+answer.value).getFullYear()),
   );
   const [month, setMonth] = useState<number | false | undefined>(
-    () => (!!answer && !!answer.value && new Date(answer.value).getMonth() + 1),
+    () => (!!answer && !!answer.value && new Date(+answer.value).getMonth() + 1),
   );
   const [day, setDay] = useState<number | false | undefined>(
-    () => (!!answer && !!answer.value && new Date(answer.value).getDate()),
+    () => (!!answer && !!answer.value && new Date(+answer.value).getDate()),
   );
 
   const value = answer?.value;
+
+  console.log({ value, day, month, year });
 
   useEffect(() => {
     if (
