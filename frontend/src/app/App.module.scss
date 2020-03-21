@@ -1,0 +1,14 @@
+@import "../theme/dimensions";
+
+.app {
+  padding: $spacing-small;
+
+  h4 {
+    margin-top: $spacing-medium;
+    margin-bottom: 0;
+  }
+
+  Button {
+    margin-top: $spacing-small;
+  }
+}
