@@ -3,7 +3,7 @@ import { Box, Button, Typography } from '@material-ui/core';
 import React, { FunctionComponent, useCallback, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
-import { IAnswer, IForm, IPage } from '../../../../shared/types';
+import { IAnswer, IForm, IPage } from '../../types';
 import { DateInput, Signature } from '../../components';
 import { Layout } from '../../components/layout/Layout';
 import { ChoiceInput } from '../../components/question-choice/Choice';

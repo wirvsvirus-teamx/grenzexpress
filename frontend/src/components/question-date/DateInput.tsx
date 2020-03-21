@@ -4,7 +4,7 @@ import Select from '@material-ui/core/Select';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 
-import { IQuestionProps } from '../../../../shared/types';
+import { IQuestionProps } from '../../types';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   formControl: {

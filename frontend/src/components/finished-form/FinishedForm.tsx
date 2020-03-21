@@ -4,7 +4,7 @@ import {
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import React from 'react';
 
-import { IFormAnswer } from '../../../../shared/types';
+import { IFormAnswer } from '../../types';
 import { forms } from '../../data/forms';
 
 const useStyles = makeStyles(() => createStyles({

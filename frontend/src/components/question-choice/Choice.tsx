@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { IQuestionProps } from '../../../../shared/types';
+import { IQuestionProps } from '../../types';
 
 export const ChoiceInput = ({ question, setAnswer, answer }: IQuestionProps<'multiple-choice'>) => (
   <div>

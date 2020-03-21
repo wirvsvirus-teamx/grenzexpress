@@ -1,7 +1,7 @@
 import { TextField } from '@material-ui/core';
 import React, { useEffect } from 'react';
 
-import { IQuestionProps } from '../../../../shared/types';
+import { IQuestionProps } from '../../types';
 
 export const TextInput = ({ question, answer, setAnswer }: IQuestionProps<'text-input'>) => {
   function setValue(value: string) {
