@@ -10,6 +10,7 @@ import { FormInput } from '../question-form/FormInput';
 import { NumberInput } from '../question-number-input/NumberInput';
 import { TextInput } from '../question-text-input/TextInput';
 import { YesNo } from '../question-yesno/YesNo';
+import { Link } from 'contexts/Paging';
 
 export const Form = ({ form, done }: { form: IForm; done(formAnswer: IFormAnswer): void }) => {
   const [current, setCurrent] = React.useState<number>(0);
@@ -48,6 +49,9 @@ export const Form = ({ form, done }: { form: IForm; done(formAnswer: IFormAnswer
     return (
       <div>
         Done!
+        <Link to="/">
+          <button type="button">Zurück zur Übersicht</button>
+        </Link>
       </div>
     );
   }
