@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 import { FinishedForm } from '../../components/finished-form/FinishedForm';
-import { Link } from '../../contexts/Paging';
 import { useUser } from '../../contexts/User';
 import { forms } from '../../data/forms';
 import css from './Main.module.scss';
@@ -14,7 +14,7 @@ export const Main = () => {
       <h2>Grenzexpress</h2>
       {user.answeredForms.map((formAnswer) => <FinishedForm formAnswer={formAnswer} />)}
       {forms.map((form) => (
-        <Link to={`/form/${form.id}`}>
+        <Link style={{ all: 'unset' }} to={`/form/${form.id}`}>
           <h2>{form.title}</h2>
           <button type="button">Los gehts!</button>
         </Link>

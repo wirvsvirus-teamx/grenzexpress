@@ -1,25 +1,25 @@
 import * as React from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import { Form } from '../components/form/Form';
-import { Page, WithPagination } from '../contexts/Paging';
 import { WithUser } from '../contexts/User';
 import { forms } from '../data/forms';
 import { Main } from '../pages/main/Main';
 
 export const App = () => (
-  <WithPagination>
+  <Router>
     <WithUser>
-      <Page name="/">
+      <Route exact path="/">
 
         <Main />
 
-      </Page>
+      </Route>
       {forms.map((form) => (
-        <Page name={`/form/${form.id}`}>
+        <Route path={`/form/${form.id}`}>
           <Form form={form} />
-        </Page>
+        </Route>
       ))}
     </WithUser>
-    <Page name="/bp">Seite für die Bundespolizei</Page>
-  </WithPagination>
+    <Route path="/bp">Seite für die Bundespolizei</Route>
+  </Router>
 );
