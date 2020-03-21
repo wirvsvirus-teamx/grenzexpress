@@ -1,30 +1,22 @@
-// FIXME: This is only here until the controller is not a stub anymore
-/* eslint-disable @typescript-eslint/no-empty-interface */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { IsBase64 } from 'class-validator';
 import {
   Body, Delete,
   Get, HeaderParam,
-  JsonController, Param, Put,
+  JsonController, NotFoundError,
+  Param, Put, UnauthorizedError,
 } from 'routing-controllers';
+import nacl from 'tweetnacl';
 
+import { Database, Db } from '../database';
 import { Logger } from '../logger';
 
 export interface GetResponse {
   data: string;
 }
 
-export interface PutResponse {
-
-}
-
 export class PutRequestBody {
   @IsBase64()
   newData!: string;
-}
-
-export interface DeleteResponse {
-
 }
 
 function extractSignatureFromAuthHeader(authHeader: string): Buffer {
@@ -35,37 +27,69 @@ function extractSignatureFromAuthHeader(authHeader: string): Buffer {
   return Buffer.from(parts[1], 'base64');
 }
 
+function signatureIsValid(message: string, signature: Buffer, publicKey: string): boolean {
+  const msg = new TextEncoder().encode(message);
+  const sig = Uint8Array.from(signature);
+  const key = new TextEncoder().encode(publicKey);
+  return nacl.sign.detached.verify(msg, sig, key);
+}
+
 @JsonController('/blob')
 export class PingController {
   @Get('/:publicKey')
   async get(
     @Logger() logger: Logger,
+    @Db() db: Database,
     @Param('publicKey') publicKey: string,
   ): Promise<GetResponse> {
     logger.debug(`Getting data for public key ${publicKey}`);
-    throw new Error('Unimplemented');
+    const blob = await db.getBlob(publicKey);
+    if (!blob) {
+      throw new NotFoundError();
+    }
+    return blob;
   }
 
   @Put('/:publicKey')
-  async post(
+  async put(
     @Logger() logger: Logger,
+    @Db() db: Database,
     @Param('publicKey') publicKey: string,
-    @Body() { newData, ...other }: PutRequestBody,
+    @Body() { newData }: PutRequestBody,
     @HeaderParam('authorization') authHeader: string,
-  ): Promise<PutResponse> {
+  ): Promise<{}> {
     logger.debug(`Putting data for public key ${publicKey}`);
     const signature = extractSignatureFromAuthHeader(authHeader);
-    throw new Error('Unimplemented');
+    if (!signatureIsValid(newData, signature, publicKey)) {
+      throw new UnauthorizedError('Signature could not be verified');
+    }
+    const blob = await db.getBlob(publicKey);
+    if (!blob) {
+      await db.upsertBlob(publicKey, newData);
+    } else {
+      await db.upsertBlob(publicKey, newData);
+    }
+    return {};
   }
 
   @Delete('/:publicKey')
   async delete(
     @Logger() logger: Logger,
+    @Db() db: Database,
     @Param('publicKey') publicKey: string,
     @HeaderParam('authorization') authHeader: string,
-  ): Promise<DeleteResponse> {
+  ): Promise<{}> {
     logger.debug(`Deleting data for public key ${publicKey}`);
     const signature = extractSignatureFromAuthHeader(authHeader);
-    throw new Error('Unimplemented');
+    // When deleting, an empty message has to be signed
+    if (!signatureIsValid('', signature, publicKey)) {
+      throw new UnauthorizedError('Signature could not be verified');
+    }
+    const blob = await db.getBlob(publicKey);
+    if (!blob) {
+      throw new NotFoundError();
+    }
+    await db.deleteBlob(publicKey);
+    return {};
   }
 }
