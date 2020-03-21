@@ -1,12 +1,11 @@
-// FIXME: This is only here until the controller is not a stub anymore
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { IsBase64 } from 'class-validator';
 import {
   Body, Delete,
   Get, HeaderParam,
   JsonController, NotFoundError,
-  Param, Put,
+  Param, Put, UnauthorizedError,
 } from 'routing-controllers';
+import nacl from 'tweetnacl';
 
 import { Database, Db } from '../database';
 import { Logger } from '../logger';
@@ -28,6 +27,13 @@ function extractSignatureFromAuthHeader(authHeader: string): Buffer {
   return Buffer.from(parts[1], 'base64');
 }
 
+function signatureIsValid(message: string, signature: Buffer, publicKey: string): boolean {
+  const msg = new TextEncoder().encode(message);
+  const sig = Uint8Array.from(signature);
+  const key = new TextEncoder().encode(publicKey);
+  return nacl.sign.detached.verify(msg, sig, key);
+}
+
 @JsonController('/blob')
 export class PingController {
   @Get('/:publicKey')
@@ -45,7 +51,7 @@ export class PingController {
   }
 
   @Put('/:publicKey')
-  async post(
+  async put(
     @Logger() logger: Logger,
     @Db() db: Database,
     @Param('publicKey') publicKey: string,
@@ -54,11 +60,13 @@ export class PingController {
   ): Promise<{}> {
     logger.debug(`Putting data for public key ${publicKey}`);
     const signature = extractSignatureFromAuthHeader(authHeader);
+    if (!signatureIsValid(newData, signature, publicKey)) {
+      throw new UnauthorizedError('Signature could not be verified');
+    }
     const blob = await db.getBlob(publicKey);
     if (!blob) {
       await db.upsertBlob(publicKey, newData);
     } else {
-      // TODO: Verify the signature
       await db.upsertBlob(publicKey, newData);
     }
     return {};
@@ -73,11 +81,14 @@ export class PingController {
   ): Promise<{}> {
     logger.debug(`Deleting data for public key ${publicKey}`);
     const signature = extractSignatureFromAuthHeader(authHeader);
+    // When deleting, an empty message has to be signed
+    if (!signatureIsValid('', signature, publicKey)) {
+      throw new UnauthorizedError('Signature could not be verified');
+    }
     const blob = await db.getBlob(publicKey);
     if (!blob) {
       throw new NotFoundError();
     }
-    // TODO: Verify the signature
     await db.deleteBlob(publicKey);
     return {};
   }
