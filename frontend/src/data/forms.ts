@@ -185,7 +185,8 @@ export const forms: IForm[] = [
         title: 'Grund der Einreise',
         questions: ['other-reason'],
         isNeeded(get) {
-          return get<'multiple-choice'>('nationality').choice !== 'deutsch';
+          return get<'multiple-choice'>('nationality').choice !== 'deutsch'
+                   && !get<'yes-no'>('residency').yes;
         },
       },
       {
