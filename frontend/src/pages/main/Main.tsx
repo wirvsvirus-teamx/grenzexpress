@@ -1,5 +1,6 @@
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import QRCode from 'qrcode.react';
 import * as React from 'react';
 
 import css from './Main.module.scss';
@@ -31,6 +32,8 @@ export const Main = () => (
       <TextField id="standard-basic" label="Staatsangehörigkeit" />
       <br />
       <Button variant="contained">Weiter</Button>
+      <br />
+      <QRCode value="https://www.google.com" />
     </main>
   </div>
 );
