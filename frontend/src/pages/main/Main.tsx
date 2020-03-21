@@ -1,39 +1,25 @@
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import QRCode from 'qrcode.react';
 import * as React from 'react';
 
+import { FinishedForm } from '../../components/finished-form/FinishedForm';
+import { Link } from '../../contexts/Paging';
+import { useUser } from '../../contexts/User';
+import { forms } from '../../data/forms';
 import css from './Main.module.scss';
 
-export const Main = () => (
-  <div className={css.app}>
-    <header className={css.header}>
-      <h2>Bescheinigung für Berufspendler</h2>
-    </header>
-    <main>
-      <p>
-        Hiermit wird bescheinigt,
-        dass die ausgeführte Person zwischen Wohnung und Arbeitsstätte über die deutsche
-        Bundesgrenze pendeln muss.
-      </p>
-      <h4>Wohnung</h4>
-      <TextField id="standard-basic" label="Staat" />
-      <br />
-      <TextField id="standard-basic" label="PLZ, Ort" />
-      <h4>Arbeitsstätte</h4>
-      <TextField id="standard-basic" label="Staat" />
-      <br />
-      <TextField id="standard-basic" label="PLZ, Ort" />
-      <h4>Angaben zum Pendler</h4>
-      <TextField id="standard-basic" label="Name" />
-      <br />
-      <TextField id="standard-basic" label="Vorname" />
-      <br />
-      <TextField id="standard-basic" label="Staatsangehörigkeit" />
-      <br />
-      <Button variant="contained">Weiter</Button>
-      <br />
-      <QRCode value="https://www.google.com" />
-    </main>
-  </div>
-);
+export const Main = () => {
+  const { user } = useUser();
+
+  return (
+    <div className={css.app}>
+      <h2>Grenzexpress</h2>
+      {user.answeredForms.map((formAnswer) => <FinishedForm formAnswer={formAnswer} />)}
+      {forms.map((form) => (
+        <Link to={`/form/${form.id}`}>
+          <h2>{form.title}</h2>
+          <button type="button">Los gehts!</button>
+        </Link>
+      ))}
+    </div>
+
+  );
+};
