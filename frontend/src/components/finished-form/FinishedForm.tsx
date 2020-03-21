@@ -4,8 +4,8 @@ import {
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import React from 'react';
 
-import { IFormAnswer } from '../../../../shared/types';
 import { forms } from '../../data/forms';
+import { IFormAnswer } from '../../types';
 
 const useStyles = makeStyles(() => createStyles({
   red: {

@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-import { IQuestionProps } from '../../../../shared/types';
+import { IQuestionProps } from '../../types';
 
-export const YesNo = ({ question, answer }: IQuestionProps<'yes-no'>) => (
+export const YesNo = ({ question, setAnswer, answer }: IQuestionProps<'yes-no'>) => (
   <div>
     {question.question}
-    <button type="button" onClick={() => answer({ type: 'yes-no', id: question.id, yes: true })}>Ja</button>
-    <button type="button" onClick={() => answer({ type: 'yes-no', id: question.id, yes: false })}>Nein</button>
+    <button disabled={answer && answer.yes} type="button" onClick={() => setAnswer({ type: 'yes-no', id: question.id, yes: true })}>Ja</button>
+    <button disabled={answer && !answer.yes} type="button" onClick={() => setAnswer({ type: 'yes-no', id: question.id, yes: false })}>Nein</button>
   </div>
 );

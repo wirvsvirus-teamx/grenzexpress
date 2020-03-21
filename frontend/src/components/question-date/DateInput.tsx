@@ -1,11 +1,10 @@
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
+import { FormControl, InputLabel } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 
-import { IQuestionProps } from '../../../../shared/types';
+import { IQuestionProps } from '../../types';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   formControl: {
@@ -14,11 +13,38 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
-export const DateInput = (_: Partial<IQuestionProps<'date-input'>>) => {
+export const DateInput = ({ question, answer, setAnswer }: IQuestionProps<'date-input'>) => {
   const classes = useStyles();
-  const [year, setYear] = useState<number>();
-  const [month, setMonth] = useState<number>();
-  const [day, setDay] = useState<number>();
+  const [year, setYear] = useState<number | false | undefined>(
+    () => (!!answer && !!answer.value && new Date(+answer.value).getFullYear()),
+  );
+  const [month, setMonth] = useState<number | false | undefined>(
+    () => (!!answer && !!answer.value && new Date(+answer.value).getMonth() + 1),
+  );
+  const [day, setDay] = useState<number | false | undefined>(
+    () => (!!answer && !!answer.value && new Date(+answer.value).getDate()),
+  );
+
+  const value = answer?.value;
+
+  console.log({
+    value, day, month, year,
+  });
+
+  useEffect(() => {
+    if (
+      typeof year === 'number'
+      && typeof month === 'number'
+      && typeof day === 'number'
+      && new Date(year, month - 1, day).getTime().toString() !== value
+    ) {
+      setAnswer({
+        id: question.id,
+        type: 'date-input',
+        value: new Date(year, month - 1, day).getTime().toString(),
+      });
+    }
+  }, [year, month, day, setAnswer, question.id, value]);
 
   type SelectChangeEvent = ChangeEvent<{ value: any }>;
 
@@ -66,7 +92,7 @@ export const DateInput = (_: Partial<IQuestionProps<'date-input'>>) => {
         <Select
           id="day"
           labelId="day-label"
-          value={day ?? ''}
+          value={day || ''}
           onChange={handleDayChange}
         >
           {generateDay()}
@@ -77,7 +103,7 @@ export const DateInput = (_: Partial<IQuestionProps<'date-input'>>) => {
         <Select
           id="month"
           labelId="month-label"
-          value={month ?? ''}
+          value={month || ''}
           onChange={handleMonthChange}
         >
           {generateMonth()}
@@ -88,7 +114,7 @@ export const DateInput = (_: Partial<IQuestionProps<'date-input'>>) => {
         <Select
           id="year"
           labelId="year-label"
-          value={year ?? ''}
+          value={year || ''}
           onChange={handleYearChange}
         >
           {generateYears()}

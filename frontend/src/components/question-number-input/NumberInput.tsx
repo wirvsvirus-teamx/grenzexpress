@@ -1,18 +1,14 @@
+import { TextField } from '@material-ui/core';
 import React from 'react';
 
-import { IQuestionProps } from '../../../../shared/types';
-import { useInput } from '../../hooks/input';
+import { IQuestionProps } from '../../types';
 
-export const NumberInput = ({ question, answer }: IQuestionProps<'number-input'>) => {
-  const [value, answerEl] = useInput({ placeholder: '', type: 'number' });
+export const NumberInput = ({ question, answer, setAnswer }: IQuestionProps<'number-input'>) => {
+  function setValue(value: string) {
+    setAnswer({ id: question.id, type: 'number-input', value: parseInt(value, 10) });
+  }
 
   return (
-    <div>
-      <h2>{question.name}</h2>
-      {answerEl}
-      <button type="button" onClick={() => answer({ id: question.id, type: 'number-input', value: parseInt(value, 10) })}>
-        Next
-      </button>
-    </div>
+    <TextField id="standard-basic" label={question.name} value={answer ? answer.value : 0} onInput={(e) => setValue((e as any).target.value)} />
   );
 };

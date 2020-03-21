@@ -1,18 +1,14 @@
-import React from 'react';
+import { TextField } from '@material-ui/core';
+import React, { useEffect } from 'react';
 
-import { IQuestionProps } from '../../../../shared/types';
-import { useInput } from '../../hooks/input';
+import { IQuestionProps } from '../../types';
 
-export const TextInput = ({ question, answer }: IQuestionProps<'text-input'>) => {
-  const [value, answerEl] = useInput({ placeholder: '', type: 'text' });
+export const TextInput = ({ question, answer, setAnswer }: IQuestionProps<'text-input'>) => {
+  function setValue(value: string) {
+    if (value) setAnswer({ id: question.id, type: 'text-input', value });
+  }
 
   return (
-    <div>
-      <h2>{question.name}</h2>
-      {answerEl}
-      <button type="button" onClick={() => answer({ id: question.id, type: 'text-input', value })}>
-        Next
-      </button>
-    </div>
+    <TextField id="standard-basic" label={question.name} value={answer ? answer.value : ''} onInput={(e) => setValue((e as any).target.value)} />
   );
 };

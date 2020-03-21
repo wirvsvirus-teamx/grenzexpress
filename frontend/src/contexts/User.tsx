@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-import { IFormAnswer, IUserData } from '../../../shared/types';
+import { IFormAnswer, IUserData } from '../types';
 
 const defaultUser = {
   uid: '?',
