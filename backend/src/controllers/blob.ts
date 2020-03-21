@@ -1,7 +1,8 @@
 import { IsString } from 'class-validator';
 import {
   Body, Delete,
-  Get, JsonController, Param, Put,
+  Get, HeaderParam,
+  JsonController, Param, Put,
 } from 'routing-controllers';
 
 import { Logger } from '../logger';
@@ -28,6 +29,14 @@ export interface DeleteResponse {
 
 }
 
+function extractSignatureFromAuthHeader(authHeader: string): string {
+  const parts = authHeader.split(' ');
+  if (parts.length !== 2 || parts[0] !== 'signature') {
+    throw new Error('Malformed Authorization header');
+  }
+  return parts[1];
+}
+
 @JsonController('/blob')
 export class PingController {
   @Get('/:publicKey')
@@ -44,8 +53,10 @@ export class PingController {
     @Logger() logger: Logger,
     @Param('publicKey') publicKey: string,
     @Body() { newData, ...other }: PutRequestBody,
+    @HeaderParam('authorization') authHeader: string,
   ): Promise<PutResponse> {
     logger.debug(`Putting data for public key ${publicKey}`);
+    const signature = extractSignatureFromAuthHeader(authHeader);
     throw new Error('Unimplemented');
   }
 
@@ -54,8 +65,10 @@ export class PingController {
     @Logger() logger: Logger,
     @Param('publicKey') publicKey: string,
     @Body() { data, ...other }: DeleteRequestBody,
+    @HeaderParam('authorization') authHeader: string,
   ): Promise<DeleteResponse> {
     logger.debug(`Deleting data for public key ${publicKey}`);
+    const signature = extractSignatureFromAuthHeader(authHeader);
     throw new Error('Unimplemented');
   }
 }
