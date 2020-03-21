@@ -4,6 +4,7 @@ import { Connection, createConnection, Repository } from 'typeorm';
 
 import { Blob } from './entity/Blob';
 import { logger } from './logger';
+import { createParamDecorator } from 'routing-controllers';
 
 type ConnectionInfo = {
   host: string;
@@ -92,6 +93,14 @@ export class Database {
     existingBlob.data = data;
     await this.blobRepository.save(existingBlob);
   }
+}
+
+export const database = new Database();
+export function Db(): (object: any, method: string, index: number) => void {
+  return createParamDecorator({
+    required: true,
+    value: () => database,
+  });
 }
 
 export class NotConnectedError extends Error {
