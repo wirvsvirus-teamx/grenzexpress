@@ -34,9 +34,7 @@
     "stylelint-config-standard": "^20.0.0",
     "stylelint-order": "^4.0.0"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
+  "proxy": "http://localhost:8000",
   "browserslist": {
     "production": [
       ">0.2%",
