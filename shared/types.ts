@@ -64,6 +64,7 @@ export type IAnswer<S extends IQuestion["type"] = IQuestion["type"]> = IAnswerTy
 // A Pgae shows questions in a sorted way:
 export interface IPage {
   title: string;
+  description?: string;
   questions: IQuestion["id"][];
   // Questions that are not needed may be skipped,
   // That way, we can create "question trees", e.g.
