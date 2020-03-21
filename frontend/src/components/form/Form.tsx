@@ -20,7 +20,7 @@ export const Form = ({ form }: { form: IForm }) => {
 
   const questionID = form.questions[current];
   const question = questions.find((it) => it.id === questionID);
-  
+
   const { addFormAnswer } = useUser();
   React.useEffect(() => {
     if (question) {
@@ -51,7 +51,6 @@ export const Form = ({ form }: { form: IForm }) => {
     setCurrent((curr) => curr + 1);
   }
 
-
   if (submitted) {
     return (
       <div>
@@ -62,13 +61,13 @@ export const Form = ({ form }: { form: IForm }) => {
       </div>
     );
   }
-  
-  if(!question) {
+
+  if (!question) {
     return (
       <div>
         <button type="button" onClick={submit}>Absenden</button>
       </div>
-    )
+    );
   }
 
   return (

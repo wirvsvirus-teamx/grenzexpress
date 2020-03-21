@@ -1,4 +1,4 @@
-import { IForm, IQuestion, IAnswer } from '../../../shared/types';
+import { IAnswer, IForm, IQuestion } from '../../../shared/types';
 
 export const questions: IQuestion[] = [
   {
