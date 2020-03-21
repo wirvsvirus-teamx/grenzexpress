@@ -3,7 +3,6 @@ import { Box, Button, Typography } from '@material-ui/core';
 import React, { FunctionComponent, useCallback, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
-import { IAnswer, IForm, IPage } from '../../types';
 import { DateInput, Signature } from '../../components';
 import { Layout } from '../../components/layout/Layout';
 import { ChoiceInput } from '../../components/question-choice/Choice';
@@ -12,6 +11,7 @@ import { NumberInput } from '../../components/question-number-input/NumberInput'
 import { TextInput } from '../../components/question-text-input/TextInput';
 import { YesNo } from '../../components/question-yesno/YesNo';
 import { getForm, questions } from '../../data/forms';
+import { IAnswer, IForm, IPage } from '../../types';
 import { NotFound } from '../not-found/NotFound';
 
 interface FormPageParams {
