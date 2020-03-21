@@ -1,15 +1,15 @@
 // FIXME: This is only here until the controller is not a stub anymore
-/* eslint-disable @typescript-eslint/no-empty-interface */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { IsBase64 } from 'class-validator';
 import {
   Body, Delete,
   Get, HeaderParam,
-  JsonController, Param, Put, NotFoundError,
+  JsonController, NotFoundError,
+  Param, Put,
 } from 'routing-controllers';
 
-import { Logger } from '../logger';
 import { Database, Db } from '../database';
+import { Logger } from '../logger';
 
 export interface GetResponse {
   data: string;

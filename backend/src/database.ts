@@ -1,10 +1,10 @@
 import config from 'config';
 import path from 'path';
+import { createParamDecorator } from 'routing-controllers';
 import { Connection, createConnection, Repository } from 'typeorm';
 
 import { Blob } from './entity/Blob';
 import { logger } from './logger';
-import { createParamDecorator } from 'routing-controllers';
 
 type ConnectionInfo = {
   host: string;
