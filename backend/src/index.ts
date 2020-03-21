@@ -8,12 +8,11 @@ import App from 'koa';
 import koaBunyanLogger, { requestIdContext, requestLogger } from 'koa-bunyan-logger';
 import { useKoaServer } from 'routing-controllers';
 
-import { Database } from './database';
+import { database } from './database';
 import { logger } from './logger';
 
 async function main(): Promise<void> {
-  const db = new Database();
-  await db.connect();
+  await database.connect();
 
   const app = new App();
 
