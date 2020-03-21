@@ -8,9 +8,14 @@ import App from 'koa';
 import koaBunyanLogger, { requestIdContext, requestLogger } from 'koa-bunyan-logger';
 import { useKoaServer } from 'routing-controllers';
 
+import { getDatabaseConnection } from './database';
 import { logger } from './logger';
 
 async function main(): Promise<void> {
+  // FIXME: This is placed here until we actually use the database
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const dbConnection = await getDatabaseConnection();
+
   const app = new App();
 
   app.use(cors());
