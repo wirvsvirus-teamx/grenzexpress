@@ -5,6 +5,7 @@ import { Form } from '../components/form/Form';
 import { WithUser } from '../contexts/User';
 import { forms } from '../data/forms';
 import { Main } from '../pages/main/Main';
+import { ShowQR } from 'components/show-qr/ShowQR';
 
 export const App = () => (
   <Router>
@@ -21,5 +22,8 @@ export const App = () => (
       ))}
     </WithUser>
     <Route path="/bp">Seite für die Bundespolizei</Route>
+    <Route path="/qr">
+      <ShowQR />
+    </Route>
   </Router>
 );
