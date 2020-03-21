@@ -32,7 +32,7 @@ export const FormPage: FunctionComponent<{}> = () => {
     return <FormSubmit />;
   }
 
-  const page = form.pages[+(step ?? 0)];
+  const page = form.pages[step];
 
   if (!page) return <NotFound />;
 
@@ -55,7 +55,7 @@ export const Page = ({ page, form, step }: { page: IPage; form: IForm; step: num
       && form.pages[index].isNeeded
       && !(form.pages[index] as any).isNeeded((answerID: string) => answers[answerID] as any)
     );
-    history.push(`./${index}`);
+    history.push(`/form/${form.id}/${index}`);
   };
 
   const prevPage = () => {
@@ -67,7 +67,7 @@ export const Page = ({ page, form, step }: { page: IPage; form: IForm; step: num
       && form.pages[index].isNeeded
       && !(form.pages[index] as any).isNeeded((answerID: string) => answers[answerID] as any)
     );
-    history.push(`./${index}`);
+    history.push(`/form/${form.id}/${index}`);
   };
 
   return (
