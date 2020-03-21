@@ -1,8 +1,8 @@
 // A unique identifier across systems:
-type UID = string;
+export type UID = string;
 
 // Description of a different types of questions asked in a form:
-type IQuestionType = {
+export type IQuestionType = {
   "text-input": {
     name: string;
   };
@@ -38,7 +38,7 @@ export type IQuestion<S extends keyof IQuestionType = keyof IQuestionType> = IQu
 };
 
 // Possible answers to questions:
-type IAnswerType = {
+export type IAnswerType = {
   "text-input": {
     value: string;
   };
@@ -101,3 +101,9 @@ export interface IUserData {
 
 // The user data sent & stored on the server
 export type IUser = Omit<IUserData, "secret">;
+
+
+export type IQuestionProps<Q extends IQuestion["type"]> = {
+  question: IQuestion<Q>;
+  answer(answer: IAnswer<Q>);
+}
