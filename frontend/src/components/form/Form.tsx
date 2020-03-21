@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import {
-  IAnswer, IForm, IQuestion,
-} from '../../../../shared/types';
+import { IAnswer, IForm, IQuestion } from '../../../../shared/types';
 import { useUser } from '../../contexts/User';
 import { questions } from '../../data/forms';
 import { ChoiceInput } from '../question-choice/Choice';

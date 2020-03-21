@@ -41,8 +41,21 @@ export const questions: IQuestion[] = [
 export const forms: IForm[] = [
   {
     id: 'pass-border',
-    title: 'Einreise',
+    title: 'Einreise Baden-Würtemberg',
+    questions: ['first-name', 'last-name', 'date-of-birth', 'residency', 'alone'],
+    validations: [],
+  },
+  {
+    id: 'pass-border-br',
+    title: 'Einreise Brandenburg',
     questions: ['first-name', 'last-name', 'date-of-birth', 'residency', 'alone'],
     validations: [],
   },
 ];
+
+export function getForm(id: string): IForm | undefined {
+  for (const form of forms) {
+    if (form.id === id) return form;
+  }
+  return undefined;
+}
