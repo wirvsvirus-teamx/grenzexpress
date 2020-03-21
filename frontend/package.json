@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.9.7",
+    "@types/qrcode.react": "^1.0.0",
     "qrcode.react": "^1.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
