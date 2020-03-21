@@ -12,8 +12,6 @@ import { Database } from './database';
 import { logger } from './logger';
 
 async function main(): Promise<void> {
-  // FIXME: This is placed here until we actually use the database
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const db = new Database();
   await db.connect();
 
