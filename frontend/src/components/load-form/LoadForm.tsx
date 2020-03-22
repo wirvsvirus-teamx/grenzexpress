@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IFormAnswer } from '../../../../shared/types';
+import { IFormAnswer } from '../../types';
 import { FinishedForm } from '../finished-form/FinishedForm';
 
 export const LoadForm = () => {

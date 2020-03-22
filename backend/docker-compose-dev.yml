@@ -4,18 +4,24 @@ services:
   database:
     image: postgres:alpine
     restart: always
+    ports:
+      - 5432:5432
     environment:
       POSTGRES_PASSWORD: test
       POSTGRES_USER: test
       POSTGRES_DB: grenzexpress
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
 
   backend:
     build: .
     restart: always
     ports:
       - 8000:8000
-    environment:
-      - NODE_ENV=production
     depends_on:
       - database
 
