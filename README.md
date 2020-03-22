@@ -1,6 +1,6 @@
-# Grenzexpress
+# GrenzExpress
 
-_Make Einreise schnell again!_
+_Kurzer Prozess dank GrenzExpress_
 
 Grenzexpress ist ein Projekt im Rahmen des WirVsVirus-Hackathon 2020, welches sich der
 Einreiseproblematik in Zeiten des Coronavirus widmet. Es zielt darauf ab, den Einreiseprozess zu
