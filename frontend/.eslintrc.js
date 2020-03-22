@@ -13,6 +13,7 @@ module.exports = {
       jsx: true,
     },
     warnOnUnsupportedTypeScriptVersion: true,
+    project: './tsconfig.json',
   },
   parser: '@typescript-eslint/parser',
   extends: [
@@ -64,6 +65,7 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-floating-promises': 'error',
     '@typescript-eslint/no-use-before-define': 'off',
 
 
