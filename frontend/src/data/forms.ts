@@ -41,7 +41,7 @@ export const questions: IQuestion[] = [
     shared: true,
   },
   {
-    type: 'number-input',
+    type: 'text-input',
     id: 'postal-code',
     name: 'Postleitzahl',
     shared: true,
