@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
+import { BlobWriter } from '../../api';
 import { DateInput, Signature } from '../../components';
 import { FinishedForm } from '../../components/finished-form/FinishedForm';
 import { Layout } from '../../components/layout/Layout';
@@ -18,10 +19,9 @@ import { TextInput } from '../../components/question-text-input/TextInput';
 import { YesNo } from '../../components/question-yesno/YesNo';
 import { useUser } from '../../contexts/User';
 import { getForm, questions } from '../../data/forms';
+import { IFormAnswers } from '../../types/answers';
 import { IAnswer, IForm, IPage } from '../../types/form';
 import { NotFound } from '../not-found/NotFound';
-import { IFormAnswers } from '../../types/answers';
-import { BlobWriter } from '../../api';
 
 interface FormPageParams {
   formId: string;
