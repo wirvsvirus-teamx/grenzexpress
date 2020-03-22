@@ -1,4 +1,6 @@
-import { AppBar, Box, Container, createStyles, IconButton, makeStyles, Toolbar, Typography } from '@material-ui/core';
+import {
+  AppBar, Box, Container, createStyles, IconButton, makeStyles, Toolbar, Typography,
+} from '@material-ui/core';
 import { ArrowBack } from '@material-ui/icons';
 import React, { FunctionComponent } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -12,7 +14,7 @@ interface LayoutProps {
 
 const useStyles = makeStyles(() => createStyles({
   logo: {
-    padding: "5px"
+    padding: '5px',
   },
 }));
 
@@ -25,14 +27,15 @@ export const Layout: FunctionComponent<LayoutProps> = ({ title, children, home }
       <AppBar position="fixed">
         <Container disableGutters>
           <Toolbar>
-            {!home &&
+            {!home
+              && (
               <IconButton aria-label="menu" color="inherit" edge="start" onClick={() => history.goBack()}>
                 <ArrowBack />
               </IconButton>
-            }
+              )}
             {
-              home &&
-              <img className={classes.logo} src={logo} height="32" width="32"></img>
+              home
+              && <img className={classes.logo} height="32" src={logo} width="32" />
             }
             <Typography variant="h6">
               {title}

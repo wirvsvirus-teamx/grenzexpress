@@ -1,4 +1,6 @@
-import { Box, FormControl, FormLabel, InputLabel } from '@material-ui/core';
+import {
+  Box, FormControl, FormLabel, InputLabel,
+} from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
@@ -85,7 +87,7 @@ export const DateInput = ({ question, answer, setAnswer }: IQuestionProps<'date-
   };
 
   return (
-    <Box mt={4} mb={2}>
+    <Box mb={2} mt={4}>
       <FormLabel component="legend">Geburtsdatum:</FormLabel>
       <FormControl className={classes.formControl}>
         <InputLabel id="day-label">Tag</InputLabel>

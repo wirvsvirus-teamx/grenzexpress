@@ -1,4 +1,6 @@
-import { Card, CardActionArea, CardActions, CardContent, CardMedia, Container, Typography } from '@material-ui/core';
+import {
+  Card, CardActionArea, CardActions, CardContent, CardMedia, Container, Typography,
+} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import QRCode from 'qrcode.react';
 import React from 'react';
@@ -9,7 +11,7 @@ import { Layout } from '../layout/Layout';
 export const ToQR = ({ url }: { url: string }) => <Link to={`/qr#${url}`} />;
 
 export const ShowQR = () => (
-  <Layout title="GrenzExpress - QR-Code" home={false}>
+  <Layout home={false} title="GrenzExpress - QR-Code">
     <Container maxWidth="xs">
       <Card>
         <CardActionArea>

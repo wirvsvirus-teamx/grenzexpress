@@ -10,8 +10,9 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core';
-import { SingleChoiceInput } from 'components/question-single-choice/SingleChoice';
-import React, { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  FunctionComponent, useCallback, useEffect, useMemo, useState,
+} from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import { BlobWriter } from '../../api';
@@ -37,8 +38,8 @@ interface FormPageParams {
 
 const useStyles = makeStyles(() => createStyles({
   button: {
-    marginLeft: "10px",
-    marginRight: "10px",
+    marginLeft: '10px',
+    marginRight: '10px',
   },
   content: {
     paddingTop: '0',
@@ -95,7 +96,7 @@ export const Page = ({ page, form, step }: { page: IPage; form: IForm; step: num
   };
 
   return (
-    <Layout title={`GrenzExpress - ${form.title}`} home={false}>
+    <Layout home={false} title={`GrenzExpress - ${form.title}`}>
       {page.description ?? ''}
       <Box>
         <Typography component="h2" variant="h6">{page.title}</Typography>
@@ -115,7 +116,6 @@ export const Page = ({ page, form, step }: { page: IPage; form: IForm; step: num
               {question.type === 'number-input' && <NumberInput {...props} />}
               {question.type === 'date-input' && <DateInput {...props} />}
               {question.type === 'multiple-choice' && <ChoiceInput {...props} />}
-              {question.type === 'single-choice' && <SingleChoiceInput {...props} />}
               {question.type === 'upload-form' && <FormInput {...props} />}
               {question.type === 'signature' && <Signature {...props} />}
               <br />
@@ -152,7 +152,7 @@ export const FormSubmit = ({ form }: { form: IForm }) => {
   }
 
   return (
-    <Layout title="Grenzexpress" home={false}>
+    <Layout home={false} title="Grenzexpress">
       <Grid container spacing={2}>
         <FinishedForm formAnswer={formAnswer} headOnly />
         <Grid item sm={4} xs={12}>

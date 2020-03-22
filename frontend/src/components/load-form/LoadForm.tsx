@@ -1,4 +1,6 @@
-import { Card, CardContent, CircularProgress, Grid, Typography } from '@material-ui/core';
+import {
+  Card, CardContent, CircularProgress, Grid, Typography,
+} from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 
@@ -39,14 +41,14 @@ export const LoadForm = () => {
 
   if (!formAnswers) {
     return (
-      <Layout title="Grenzexpress" home={false}>
+      <Layout home={false} title="Grenzexpress">
         <CircularProgress />
       </Layout>
     );
   }
 
   return (
-    <Layout title="Grenzexpress" home={false}>
+    <Layout home={false} title="Grenzexpress">
       <Grid container spacing={2}>
         <FinishedForm formAnswer={formAnswers} headOnly wholeWidth />
         {formAnswers.answers.map((answer) => {

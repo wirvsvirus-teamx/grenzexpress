@@ -1,4 +1,6 @@
-import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@material-ui/core';
+import {
+  FormControl, FormControlLabel, FormLabel, Radio, RadioGroup,
+} from '@material-ui/core';
 import * as React from 'react';
 
 import { IQuestionProps } from '../../types';
@@ -12,10 +14,10 @@ export const ChoiceInput = ({ question, setAnswer, answer }: IQuestionProps<'mul
         {question.choices.map((choice) => (
           <FormControlLabel
             key={choice}
+            className={style.label}
             control={<Radio />}
             label={choice}
             value={choice}
-            className={style.label}
           />
         ))}
       </RadioGroup>

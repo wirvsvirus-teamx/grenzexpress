@@ -6,7 +6,7 @@ import { IQuestionProps } from '../../types';
 export const YesNo = ({ question, setAnswer, answer }: IQuestionProps<'yes-no'>) => (
   <div>
     <div>{question.question}</div>
-    <ButtonGroup color="primary" variant="text" style={{ marginTop: "5px" }}>
+    <ButtonGroup color="primary" style={{ marginTop: '5px' }} variant="text">
       <Button
         disabled={answer && answer.yes}
         type="button"

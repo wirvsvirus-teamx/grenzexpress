@@ -88,8 +88,8 @@ export const FinishedForm = ({
       <Card>
         <CardHeader
           className={classes.header}
-          title={form.title}
           subheader={name}
+          title={form.title}
         />
         <CardContent className={classes.content}>
           <Box className={classes.message}>
@@ -97,7 +97,7 @@ export const FinishedForm = ({
             <div>
               <Typography>{message}</Typography>
               {state === 'unknown' && (
-                <Typography >
+                <Typography>
                   Die Entscheidung trifft ein Kollege vor Ort.
                 </Typography>
               )}

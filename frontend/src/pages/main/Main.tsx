@@ -9,7 +9,7 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core';
-import React, { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { FinishedForm } from '../../components/finished-form/FinishedForm';
@@ -33,7 +33,7 @@ export const Main = () => {
   const classes = useStyles();
 
   return (
-    <Layout title="GrenzExpress" home={true}>
+    <Layout home title="GrenzExpress">
       <Grid container spacing={3}>
         {forms.map((form) => (
           <Grid key={form.id} item sm={4} xs={12}>
@@ -48,7 +48,7 @@ export const Main = () => {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Link to={`/form/${form.id}`} style={{ textDecoration: 'none' }}>
+                <Link style={{ textDecoration: 'none' }} to={`/form/${form.id}`}>
                   <Button color="primary" variant="contained">
                     Los gehts!
                   </Button>
@@ -61,6 +61,6 @@ export const Main = () => {
           (formAnswer, i) => <FinishedForm key={i} formAnswer={formAnswer} />,
         )}
       </Grid>
-    </Layout >
+    </Layout>
   );
 };

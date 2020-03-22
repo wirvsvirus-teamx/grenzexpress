@@ -1,4 +1,6 @@
-import { Box, Button, createStyles, makeStyles } from '@material-ui/core';
+import {
+  Box, Button, createStyles, makeStyles,
+} from '@material-ui/core';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { IQuestionProps } from '../../types';
@@ -16,9 +18,9 @@ function getMousePos(canvas: HTMLCanvasElement, evt: MouseEvent | Touch) {
 
 const useStyles = makeStyles(() => createStyles({
   button: {
-    marginLeft: "10px",
-    marginRight: "10px",
-  }
+    marginLeft: '10px',
+    marginRight: '10px',
+  },
 }));
 
 export const Signature = ({
@@ -123,10 +125,10 @@ export const Signature = ({
       <Box display="flex" justifyContent="center" mt={3}>
         <Button className={classes.button} color="secondary" disabled={!answer} variant="contained" onClick={() => { setPointCount(0); removeAnswer(question.id); }}>
           Zurücksetzen
-      </Button>
+        </Button>
         <Button className={classes.button} color="primary" disabled={!canSign} variant="contained" onClick={sign}>
           Signieren
-      </Button>
+        </Button>
       </Box>
     </>
   );
