@@ -1,33 +1,37 @@
 import * as React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import { Form } from '../components/form/Form';
 import { LoadForm } from '../components/load-form/LoadForm';
 import { ShowQR } from '../components/show-qr/ShowQR';
 import { WithUser } from '../contexts/User';
-import { forms } from '../data/forms';
+import { FormPage } from '../pages/form-page/FormPage';
 import { Main } from '../pages/main/Main';
+import { NotFound } from '../pages/not-found/NotFound';
 
 export const App = () => (
   <Router>
     <WithUser>
-      <Route exact path="/">
-
-        <Main />
-
-      </Route>
-      {forms.map((form) => (
-        <Route path={`/form/${form.id}`}>
-          <Form form={form} />
+      <Switch>
+        <Route exact path="/" strict>
+          <Main />
         </Route>
-      ))}
+        <Route exact path="/form/:formId" strict>
+          <FormPage />
+        </Route>
+        <Route exact path="/form/:formId/:step" strict>
+          <FormPage />
+        </Route>
+        <Route exact path="/bp" strict>Seite für die Bundespolizei</Route>
+        <Route exact path="/qr" strict>
+          <ShowQR />
+        </Route>
+        <Route exact path="/load-form" strict>
+          <LoadForm />
+        </Route>
+        <Route path="/">
+          <NotFound />
+        </Route>
+      </Switch>
     </WithUser>
-    <Route path="/bp">Seite für die Bundespolizei</Route>
-    <Route path="/qr">
-      <ShowQR />
-    </Route>
-    <Route path="/form">
-      <LoadForm />
-    </Route>
   </Router>
 );

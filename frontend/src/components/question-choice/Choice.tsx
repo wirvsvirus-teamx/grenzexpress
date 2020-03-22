@@ -1,10 +1,25 @@
+import './Choice.scss';
+
+import {
+  Button, ButtonGroup, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup,
+} from '@material-ui/core';
 import * as React from 'react';
 
-import { IQuestionProps } from '../../../../shared/types';
+import { IQuestionProps } from '../../types';
 
-export const ChoiceInput = ({ question, answer }: IQuestionProps<'multiple-choice'>) => (
-  <div>
-    {question.question}
-    {question.choices.map((choice) => <button type="button" onClick={() => answer({ type: 'multiple-choice', id: question.id, choice })}>{choice}</button>)}
+export const ChoiceInput = ({ question, setAnswer, answer }: IQuestionProps<'multiple-choice'>) => (
+  <div className="choice-input-group">
+    <FormControl component="fieldset">
+      <FormLabel component="legend">{question.question}</FormLabel>
+      <RadioGroup aria-label="gender" name="gender1" value={!!answer && answer.choice} onChange={(e) => setAnswer({ id: question.id, type: 'multiple-choice', choice: e.target.value })}>
+        {question.choices.map((choice) => (
+          <FormControlLabel
+            control={<Radio />}
+            label={choice}
+            value={choice}
+          />
+        ))}
+      </RadioGroup>
+    </FormControl>
   </div>
 );
