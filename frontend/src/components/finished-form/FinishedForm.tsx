@@ -1,7 +1,6 @@
 import {
   Button,
-  Card, CardActions, CardContent, CardHeader, createStyles, Grid, IconButton,
-  makeStyles, Typography,
+  Card, CardActions, CardContent, CardHeader, createStyles, Grid, makeStyles,
 } from '@material-ui/core';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import React from 'react';
@@ -9,6 +8,7 @@ import { useHistory } from 'react-router';
 
 import { forms } from '../../data/forms';
 import { IFormAnswers } from '../../types/answers';
+import { IAnswer, IAnswerType } from '../../types/form';
 
 const useStyles = makeStyles(() => createStyles({
   red: {
@@ -43,6 +43,11 @@ export const FinishedForm = ({
   const token = `${formAnswer.writer.publicKey.base64url}@${formAnswer.writer.symmetricKey.base64url}`;
   const innerUrl = `http://localhost/load-form#${token}`;
   const url = `/qr#${innerUrl}`;
+  const firstNameAnswer = formAnswer.answers.find((it) => it.id === 'first-name') as IAnswer<'text-input'>;
+  const firstName = firstNameAnswer?.value || '';
+  const lastNameAnswer = formAnswer.answers.find((it) => it.id === 'last-name') as IAnswer<'text-input'>;
+  const lastName = lastNameAnswer?.value || '';
+  const name = `${firstName} ${lastName}`;
 
   const color = ({
     valid: 'green',
@@ -54,7 +59,7 @@ export const FinishedForm = ({
     <Grid item sm={4} xs={12}>
       <Card>
         <CardHeader
-          subheader=""
+          subheader={name}
           title={form.title}
         />
         <CardContent className={classes[color]}>
