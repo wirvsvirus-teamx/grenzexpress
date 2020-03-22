@@ -2,6 +2,8 @@ import {
   Equals, IsObject,
 } from 'class-validator';
 
+import { IFormAnswer } from '../types';
+
 function Type<T extends string>(value: T): (object: { type: T }, propertyName: 'type') => void {
   return Equals(value);
 }
@@ -11,7 +13,7 @@ class FormAnswer {
   type!: 'formAnswer'
 
   @IsObject()
-  answers!: Record<string, any>
+  answer!: IFormAnswer
 }
 
 export const blobClasses = {

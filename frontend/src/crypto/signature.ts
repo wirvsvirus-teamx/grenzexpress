@@ -23,7 +23,7 @@ export class PublicKey {
 }
 
 export class SecretKey extends PublicKey {
-  private secretKey: Uint8Array
+  readonly secretKey: Uint8Array
 
   constructor({ publicKey, secretKey }: SignKeyPair) {
     super(publicKey);
@@ -32,6 +32,10 @@ export class SecretKey extends PublicKey {
 
   static generate(): SecretKey {
     return new SecretKey(keyPair());
+  }
+
+  static fromSecretKey(secretKey: Uint8Array) {
+    return new SecretKey(keyPair.fromSecretKey(secretKey));
   }
 
   sign(msg: Uint8Array): Uint8Array {

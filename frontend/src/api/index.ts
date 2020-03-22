@@ -87,6 +87,22 @@ export class BlobWriter<B extends BlobType> extends BlobAPI<B> {
     );
   }
 
+  static fromJSON<B extends BlobType>(blobType: B, data: string): BlobWriter<B> {
+    const { symmetricKey, secretKey } = JSON.parse(data);
+    return new BlobWriter(
+      blobType,
+      new SymmetricKey(base64.decode(symmetricKey)),
+      SecretKey.fromSecretKey(base64.decode(secretKey)),
+    );
+  }
+
+  toJSON(): string {
+    return JSON.stringify({
+      symmetricKey: this.symmetricKey,
+      secretKey: this.secretKey,
+    });
+  }
+
   get publicKey(): PublicKey {
     return this.secretKey;
   }

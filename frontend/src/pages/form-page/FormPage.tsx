@@ -119,8 +119,8 @@ export const FormSubmit = ({ form }: { form: IForm }) => {
     answers: Object.values(answers),
   }), [form, answers]);
 
-  function submit() {
-    addFormAnswer(formAnswer);
+  async function submit() {
+    await addFormAnswer(formAnswer);
     localStorage.removeItem(`grenzexpress-${form.id}`);
     history.replace('/');
   }

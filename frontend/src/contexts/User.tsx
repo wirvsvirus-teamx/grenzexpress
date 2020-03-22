@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 
+import { BlobWriter } from '../api';
 import { IFormAnswer, IUserData } from '../types';
 
-const defaultUser = {
+const defaultUser: IUserData = {
   uid: '?',
   answeredForms: [],
   secret: '?',
@@ -10,14 +11,16 @@ const defaultUser = {
   token: '?',
 };
 
-const UserContext = React.createContext<
-  { user: IUserData; addFormAnswer(answer: IFormAnswer): void }
-    >({
-      user: defaultUser,
-      addFormAnswer() {
-        throw new Error('Missing user context');
-      },
-    });
+interface UserContext {
+  user: IUserData;
+  addFormAnswer(answer: IFormAnswer): Promise<void>;
+}
+const UserContext = React.createContext<UserContext>({
+  user: defaultUser,
+  addFormAnswer() {
+    throw new Error('Missing user context');
+  },
+});
 
 export const useUser = () => useContext(UserContext);
 
@@ -37,7 +40,10 @@ export const WithUser = ({ children }: React.PropsWithChildren<{}>) => {
     localStorage.setItem('grenzexpress-user', JSON.stringify(user));
   }, [user]);
 
-  function addFormAnswer(answer: IFormAnswer) {
+  async function addFormAnswer(answer: IFormAnswer) {
+    const blob = BlobWriter.generate('formAnswer');
+    await blob.set({ answer });
+    answer.key = blob.toJSON();
     setUser((u) => ({ ...u, answeredForms: [...u.answeredForms, answer] }));
   }
 
