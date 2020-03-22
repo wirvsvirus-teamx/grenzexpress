@@ -2,7 +2,7 @@ import {
   Equals, IsObject,
 } from 'class-validator';
 
-import { IFormAnswer } from '../types';
+import { IAnswer } from '../types/form';
 
 function Type<T extends string>(value: T): (object: { type: T }, propertyName: 'type') => void {
   return Equals(value);
@@ -13,7 +13,7 @@ class FormAnswer {
   type!: 'formAnswer'
 
   @IsObject()
-  answer!: IFormAnswer
+  answers!: IAnswer[]
 }
 
 export const blobClasses = {

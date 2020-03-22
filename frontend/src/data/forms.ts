@@ -1,4 +1,4 @@
-import { IForm, IQuestion } from '../types';
+import { IForm, IQuestion } from '../types/form';
 
 export const questions: IQuestion[] = [
   // personal data
@@ -192,7 +192,7 @@ export const forms: IForm[] = [
         questions: ['other-reason'],
         isNeeded(get) {
           return get<'multiple-choice'>('nationality').choice !== 'deutsch'
-                   && !get<'yes-no'>('residency').yes;
+            && !get<'yes-no'>('residency').yes;
         },
       },
       {

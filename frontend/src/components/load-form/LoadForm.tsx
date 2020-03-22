@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IFormAnswer } from '../../types';
+import { IFormAnswers } from '../../types/answers';
 import { FinishedForm } from '../finished-form/FinishedForm';
 
 export const LoadForm = () => {
@@ -9,7 +9,7 @@ export const LoadForm = () => {
 
   // Load some magic from server
 
-  const result: IFormAnswer = {
+  const result: IFormAnswers = {
     id: 'pass-border',
     key: '?',
     uid: '?',

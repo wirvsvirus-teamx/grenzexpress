@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 
 import { BlobWriter } from '../api';
-import { IFormAnswer, IUserData } from '../types';
+import { IFormAnswers } from '../types/answers';
+import { IUserData } from '../types/user';
 
 const defaultUser: IUserData = {
   uid: '?',
@@ -13,11 +14,11 @@ const defaultUser: IUserData = {
 
 interface UserContext {
   user: IUserData;
-  addFormAnswer(answer: IFormAnswer): Promise<void>;
+  addFormAnswers(answers: IFormAnswers): Promise<void>;
 }
 const UserContext = React.createContext<UserContext>({
   user: defaultUser,
-  addFormAnswer() {
+  addFormAnswers() {
     throw new Error('Missing user context');
   },
 });
@@ -40,15 +41,15 @@ export const WithUser = ({ children }: React.PropsWithChildren<{}>) => {
     localStorage.setItem('grenzexpress-user', JSON.stringify(user));
   }, [user]);
 
-  async function addFormAnswer(answer: IFormAnswer) {
+  async function addFormAnswers(answers: IFormAnswers) {
     const blob = BlobWriter.generate('formAnswer');
-    await blob.set({ answer });
-    answer.key = blob.toJSON();
-    setUser((u) => ({ ...u, answeredForms: [...u.answeredForms, answer] }));
+    await blob.set({ answers: answers.answers });
+    answers.key = blob.toJSON();
+    setUser((u) => ({ ...u, answeredForms: [...u.answeredForms, answers] }));
   }
 
   return (
-    <UserContext.Provider value={{ user, addFormAnswer }}>
+    <UserContext.Provider value={{ user, addFormAnswers }}>
       {children}
     </UserContext.Provider>
   );

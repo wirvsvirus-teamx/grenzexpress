@@ -8,7 +8,7 @@ import React from 'react';
 import { useHistory } from 'react-router';
 
 import { forms } from '../../data/forms';
-import { IFormAnswer } from '../../types';
+import { IFormAnswers } from '../../types/answers';
 
 const useStyles = makeStyles(() => createStyles({
   red: {
@@ -26,7 +26,7 @@ export const FinishedForm = ({
   formAnswer,
   headOnly,
 }: {
-  formAnswer: IFormAnswer;
+  formAnswer: IFormAnswers;
   headOnly?: true;
 }) => {
   const form = forms.find((it) => it.id === formAnswer.id);
@@ -63,17 +63,17 @@ export const FinishedForm = ({
             {message}
           </p>
           {state === 'unknown' && (
-          <p>
-            Die Entscheidung trifft ein Kollege vor Ort.
-          </p>
+            <p>
+              Die Entscheidung trifft ein Kollege vor Ort.
+            </p>
           )}
         </CardContent>
         {!headOnly && (
-        <CardActions>
-          <Button color="primary" variant="contained" onClick={() => history.push(url)}>
-            Vorzeigen
-          </Button>
-        </CardActions>
+          <CardActions>
+            <Button color="primary" variant="contained" onClick={() => history.push(url)}>
+              Vorzeigen
+            </Button>
+          </CardActions>
         )}
       </Card>
     </Grid>

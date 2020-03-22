@@ -18,7 +18,7 @@ import { TextInput } from '../../components/question-text-input/TextInput';
 import { YesNo } from '../../components/question-yesno/YesNo';
 import { useUser } from '../../contexts/User';
 import { getForm, questions } from '../../data/forms';
-import { IAnswer, IForm, IPage } from '../../types';
+import { IAnswer, IForm, IPage } from '../../types/form';
 import { NotFound } from '../not-found/NotFound';
 
 interface FormPageParams {
