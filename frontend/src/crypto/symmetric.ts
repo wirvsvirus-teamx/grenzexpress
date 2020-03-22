@@ -1,12 +1,22 @@
 import { randomBytes, secretbox } from 'tweetnacl';
 
-import { decode, encode } from './util';
+import {
+  base64url, decode, encode,
+} from './util';
 
 export class SymmetricKey<T> {
   constructor(private key: Uint8Array) { }
 
   static generate<T>(): SymmetricKey<T> {
     return new SymmetricKey(randomBytes(secretbox.keyLength));
+  }
+
+  static fromBase64url<T>(data: string): SymmetricKey<T> {
+    return new SymmetricKey(base64url.decode(data));
+  }
+
+  get base64url(): string {
+    return base64url.encode(this.key);
   }
 
   encrypt(msg: T): Uint8Array {
