@@ -7,7 +7,7 @@ import React from 'react';
 import { useHistory } from 'react-router';
 
 import { forms } from '../../data/forms';
-import {IAnswer, IAnswerType, IFormAnswer} from '../../types';
+import { IAnswer, IAnswerType, IFormAnswer } from '../../types';
 
 const useStyles = makeStyles(() => createStyles({
   red: {
