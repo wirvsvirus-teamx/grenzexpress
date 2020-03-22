@@ -22,7 +22,13 @@ const useStyles = makeStyles(() => createStyles({
   },
 }));
 
-export const FinishedForm = ({ formAnswer, headOnly }: { formAnswer: IFormAnswer, headOnly?: true; }) => {
+export const FinishedForm = ({
+  formAnswer,
+  headOnly,
+}: {
+  formAnswer: IFormAnswer;
+  headOnly?: true;
+}) => {
   const form = forms.find((it) => it.id === formAnswer.id);
   const classes = useStyles();
 
@@ -60,11 +66,13 @@ export const FinishedForm = ({ formAnswer, headOnly }: { formAnswer: IFormAnswer
           </p>
           )}
         </CardContent>
-        {!headOnly && <CardActions>
+        {!headOnly && (
+        <CardActions>
           <Button color="primary" variant="contained" onClick={() => history.push(url)}>
             Vorzeigen
           </Button>
-        </CardActions>}
+        </CardActions>
+        )}
       </Card>
     </Grid>
   );

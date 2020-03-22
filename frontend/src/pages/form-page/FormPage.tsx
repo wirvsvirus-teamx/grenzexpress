@@ -138,8 +138,10 @@ export const FormSubmit = ({ form }: { form: IForm }) => {
                 Formular absenden
               </Typography>
               <p>
-                Wenn du das Formular absendest, kannst du die Daten an der Grenze einfach mit dem Grenzpersonal teilen.
-                Deine Daten werden geschützt, und nur wer einen QR Code besitzt kann darauf zugreifen.
+                Wenn du das Formular absendest,
+                kannst du die Daten an der Grenze einfach mit dem Grenzpersonal teilen.
+                Deine Daten werden geschützt,
+                und nur wer einen QR Code besitzt kann darauf zugreifen.
               </p>
             </CardContent>
             <CardActions>
