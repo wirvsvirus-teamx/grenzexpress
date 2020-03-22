@@ -34,7 +34,7 @@ export const Main = () => {
   const classes = useStyles();
 
   return (
-    <Layout title="Grenzexpress" home={true}>
+    <Layout title="GrenzExpress" home={true}>
       <Grid container spacing={3}>
         {forms.map((form) => (
           <Grid key={form.id} item sm={4} xs={12}>

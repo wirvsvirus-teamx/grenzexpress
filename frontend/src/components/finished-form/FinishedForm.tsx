@@ -85,13 +85,15 @@ export const FinishedForm = ({
         <CardContent className={classes.content}>
           <Box className={classes.message}>
             <FiberManualRecordIcon className={[classes[color], classes.dot].join(' ')} />
-            <Typography>{message}</Typography>
+            <div>
+              <Typography>{message}</Typography>
+              {state === 'unknown' && (
+                <Typography >
+                  Die Entscheidung trifft ein Kollege vor Ort.
+                </Typography>
+              )}
+            </div>
           </Box>
-          {state === 'unknown' && (
-            <Typography >
-              Die Entscheidung trifft ein Kollege vor Ort.
-            </Typography>
-          )}
         </CardContent>
         {!headOnly && (
           <CardActions>

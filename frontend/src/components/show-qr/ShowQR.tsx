@@ -9,7 +9,7 @@ import { Layout } from '../layout/Layout';
 export const ToQR = ({ url }: { url: string }) => <Link to={`/qr#${url}`} />;
 
 export const ShowQR = () => (
-  <Layout title="Grenzexpress - QR-Code" home={false}>
+  <Layout title="GrenzExpress - QR-Code" home={false}>
     <Container maxWidth="xs">
       <Card>
         <CardActionArea>

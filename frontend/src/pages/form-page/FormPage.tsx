@@ -1,5 +1,16 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import { Box, Button, Card, CardActions, CardContent, Grid, Typography } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  createStyles,
+  Grid,
+  makeStyles,
+  Typography,
+} from '@material-ui/core';
+import { SingleChoiceInput } from 'components/question-single-choice/SingleChoice';
 import React, { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
@@ -16,10 +27,26 @@ import { getForm, questions } from '../../data/forms';
 import { IAnswer, IForm, IPage } from '../../types';
 import { NotFound } from '../not-found/NotFound';
 
+/* eslint-disable react/jsx-props-no-spreading */
 interface FormPageParams {
   formId: string;
   step: string;
 }
+
+const useStyles = makeStyles(() => createStyles({
+  button: {
+    marginLeft: "10px",
+    marginRight: "10px",
+  },
+  content: {
+    paddingTop: '0',
+    paddingBottom: '0',
+  },
+  header: {
+    margin: 0,
+    paddingBottom: 0,
+  },
+}));
 
 export const FormPage: FunctionComponent<{}> = () => {
   const { formId, step: _step } = useParams<FormPageParams>();
@@ -47,6 +74,7 @@ export const Page = ({ page, form, step }: { page: IPage; form: IForm; step: num
   const history = useHistory();
   const prevEnabled = step > 0;
   const nextEnabled = page && page.questions.every((question) => question in answers);
+  const classes = useStyles();
 
   const nextPage = () => {
     let index = step;
@@ -65,7 +93,7 @@ export const Page = ({ page, form, step }: { page: IPage; form: IForm; step: num
   };
 
   return (
-    <Layout title={`Grenzexpress - ${form.title}`} home={false}>
+    <Layout title={`GrenzExpress - ${form.title}`} home={false}>
       {page.description ?? ''}
       <Box>
         <Typography component="h2" variant="h6">{page.title}</Typography>
@@ -85,6 +113,7 @@ export const Page = ({ page, form, step }: { page: IPage; form: IForm; step: num
               {question.type === 'number-input' && <NumberInput {...props} />}
               {question.type === 'date-input' && <DateInput {...props} />}
               {question.type === 'multiple-choice' && <ChoiceInput {...props} />}
+              {question.type === 'single-choice' && <SingleChoiceInput {...props} />}
               {question.type === 'upload-form' && <FormInput {...props} />}
               {question.type === 'signature' && <Signature {...props} />}
               <br />
@@ -93,9 +122,9 @@ export const Page = ({ page, form, step }: { page: IPage; form: IForm; step: num
         })}
       </Box>
 
-      <Box mt={3}>
-        <Button disabled={!prevEnabled} variant="contained" onClick={prevPage}>Zurück</Button>
-        <Button disabled={!nextEnabled} variant="contained" onClick={nextPage}>Weiter</Button>
+      <Box display="flex" justifyContent="center" mt={3}>
+        <Button className={classes.button} disabled={!prevEnabled} variant="contained" onClick={prevPage}>Zurück</Button>
+        <Button className={classes.button} disabled={!nextEnabled} variant="contained" onClick={nextPage}>Weiter</Button>
       </Box>
     </Layout>
   );
@@ -105,6 +134,8 @@ export const FormSubmit = ({ form }: { form: IForm }) => {
   const { answers } = useAnswers(form.id);
   const { addFormAnswer } = useUser();
   const history = useHistory();
+
+  const classes = useStyles();
 
   const formAnswer = useMemo(() => ({
     id: form.id,
@@ -126,16 +157,17 @@ export const FormSubmit = ({ form }: { form: IForm }) => {
         <FinishedForm formAnswer={formAnswer} headOnly />
         <Grid item sm={4} xs={12}>
           <Card>
-            <CardContent>
-              <Typography component="h2" variant="h5">
-                Formular absenden
-              </Typography>
-              <p>
+            <CardHeader
+              className={classes.header}
+              title="Formular absenden"
+            />
+            <CardContent className={classes.content}>
+              <Typography>
                 Wenn du das Formular absendest,
                 kannst du die Daten an der Grenze einfach mit dem Grenzpersonal teilen.
                 Deine Daten werden geschützt,
                 und nur wer einen QR Code besitzt kann darauf zugreifen.
-              </p>
+              </Typography>
             </CardContent>
             <CardActions>
               <Button color="primary" variant="contained" onClick={submit}>Formular Absenden</Button>
