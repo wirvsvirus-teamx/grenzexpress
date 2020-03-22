@@ -21,7 +21,6 @@ export const App = () => (
         <Route exact path="/form/:formId/:step" strict>
           <FormPage />
         </Route>
-        <Route exact path="/bp" strict>Seite für die Bundespolizei</Route>
         <Route exact path="/qr" strict>
           <ShowQR />
         </Route>

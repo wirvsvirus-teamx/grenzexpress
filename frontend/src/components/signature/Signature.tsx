@@ -1,13 +1,13 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable consistent-return */
-import { Button } from '@material-ui/core';
-import React, {
-  useEffect, useRef, useState,
-} from 'react';
+import {
+  Box, Button, createStyles, makeStyles,
+} from '@material-ui/core';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { IQuestionProps } from '../../types';
 import style from './Signature.module.scss';
 
+/* eslint-disable no-unused-expressions */
+/* eslint-disable consistent-return */
 function getMousePos(canvas: HTMLCanvasElement, evt: MouseEvent | Touch) {
   const rect = canvas.getBoundingClientRect();
   return {
@@ -15,9 +15,18 @@ function getMousePos(canvas: HTMLCanvasElement, evt: MouseEvent | Touch) {
     y: evt.clientY - rect.top,
   };
 }
+
+const useStyles = makeStyles(() => createStyles({
+  button: {
+    marginLeft: '10px',
+    marginRight: '10px',
+  },
+}));
+
 export const Signature = ({
   question, setAnswer, answer, removeAnswer,
 }: IQuestionProps<'signature'>) => {
+  const classes = useStyles();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [pointCount, setPointCount] = useState(0);
   const canSign = pointCount >= 1 && !answer;
@@ -111,17 +120,19 @@ export const Signature = ({
   }, [answer, canvasRef]);
   return (
     <>
-      <canvas ref={canvasRef} className={style.border} height="200" id="canvas" width="300">
-        <p>Please activate JavaScript.</p>
-      </canvas>
-      <br />
-      <br />
-      <Button color="secondary" disabled={!answer} variant="contained" onClick={() => { setPointCount(0); removeAnswer(question.id); }}>
-        Zurücksetzen
-      </Button>
-      <Button color="primary" disabled={!canSign} variant="contained" onClick={sign}>
-        Signieren
-      </Button>
+      <Box display="flex" justifyContent="center">
+        <canvas ref={canvasRef} className={style.border} height="200" id="canvas" width="300">
+          <p>Please activate JavaScript.</p>
+        </canvas>
+      </Box>
+      <Box display="flex" justifyContent="center" mt={3}>
+        <Button className={classes.button} color="secondary" disabled={!answer} variant="contained" onClick={() => { setPointCount(0); removeAnswer(question.id); }}>
+          Zurücksetzen
+        </Button>
+        <Button className={classes.button} color="primary" disabled={!canSign} variant="contained" onClick={sign}>
+          Signieren
+        </Button>
+      </Box>
     </>
   );
 };
