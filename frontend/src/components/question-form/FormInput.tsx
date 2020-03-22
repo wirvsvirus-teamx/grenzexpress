@@ -25,7 +25,7 @@ export const FormInput = ({ answer, setAnswer, question }: IQuestionProps<'uploa
           <Typography color="textSecondary" component="p" variant="body2">
             {question.description}
           </Typography>
-          {answer && <img src={answer.image} style={{ maxWidth: '300px' }} />}
+          {answer && <img alt={question.title} src={answer.image} style={{ maxWidth: '300px' }} />}
         </CardContent>
       </CardActionArea>
       <CardActions>

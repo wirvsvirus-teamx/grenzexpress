@@ -1,7 +1,6 @@
 import {
   Button,
-  Card, CardActions, CardContent, CardHeader, createStyles, Grid, IconButton,
-  makeStyles, Typography,
+  Card, CardActions, CardContent, CardHeader, createStyles, Grid, makeStyles,
 } from '@material-ui/core';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import React from 'react';
