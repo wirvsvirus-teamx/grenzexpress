@@ -25,9 +25,11 @@ const useStyles = makeStyles(() => createStyles({
 export const FinishedForm = ({
   formAnswer,
   headOnly,
+  wholeWidth,
 }: {
   formAnswer: IFormAnswer;
   headOnly?: true;
+  wholeWidth?: true;
 }) => {
   const form = forms.find((it) => it.id === formAnswer.id);
   const classes = useStyles();
@@ -41,7 +43,7 @@ export const FinishedForm = ({
   );
 
   const token = window.btoa(`${formAnswer.uid}@${formAnswer.key}`);
-  const innerUrl = `http://localhost/load-form#${token}`;
+  const innerUrl = `https://grenz.express/load-form#${token}`;
   const url = `/qr#${innerUrl}`;
 
   const color = ({
@@ -51,7 +53,7 @@ export const FinishedForm = ({
   } as const)[state];
 
   return (
-    <Grid item sm={4} xs={12}>
+    <Grid item sm={wholeWidth ? 12 : 4} xs={12}>
       <Card>
         <CardHeader
           subheader=""
