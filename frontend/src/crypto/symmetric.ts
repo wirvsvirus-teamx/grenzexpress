@@ -5,7 +5,7 @@ import {
 } from './util';
 
 export class SymmetricKey<T> {
-  constructor(private key: Uint8Array) { }
+  constructor(public readonly key: Uint8Array) { }
 
   static generate<T>(): SymmetricKey<T> {
     return new SymmetricKey(randomBytes(secretbox.keyLength));

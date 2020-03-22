@@ -14,6 +14,7 @@ import { SingleChoiceInput } from 'components/question-single-choice/SingleChoic
 import React, { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
+import { BlobWriter } from '../../api';
 import { DateInput, Signature } from '../../components';
 import { FinishedForm } from '../../components/finished-form/FinishedForm';
 import { Layout } from '../../components/layout/Layout';
@@ -24,7 +25,8 @@ import { TextInput } from '../../components/question-text-input/TextInput';
 import { YesNo } from '../../components/question-yesno/YesNo';
 import { useUser } from '../../contexts/User';
 import { getForm, questions } from '../../data/forms';
-import { IAnswer, IForm, IPage } from '../../types';
+import { IFormAnswers } from '../../types/answers';
+import { IAnswer, IForm, IPage } from '../../types/form';
 import { NotFound } from '../not-found/NotFound';
 
 /* eslint-disable react/jsx-props-no-spreading */
@@ -107,7 +109,7 @@ export const Page = ({ page, form, step }: { page: IPage; form: IForm; step: num
           };
 
           return (
-            <>
+            <div key={id}>
               {question.type === 'yes-no' && <YesNo {...props} />}
               {question.type === 'text-input' && <TextInput {...props} />}
               {question.type === 'number-input' && <NumberInput {...props} />}
@@ -117,7 +119,7 @@ export const Page = ({ page, form, step }: { page: IPage; form: IForm; step: num
               {question.type === 'upload-form' && <FormInput {...props} />}
               {question.type === 'signature' && <Signature {...props} />}
               <br />
-            </>
+            </div>
           );
         })}
       </Box>
@@ -132,21 +134,19 @@ export const Page = ({ page, form, step }: { page: IPage; form: IForm; step: num
 
 export const FormSubmit = ({ form }: { form: IForm }) => {
   const { answers } = useAnswers(form.id);
-  const { addFormAnswer } = useUser();
+  const { addFormAnswers } = useUser();
   const history = useHistory();
 
   const classes = useStyles();
 
-  const formAnswer = useMemo(() => ({
+  const formAnswer: IFormAnswers = useMemo(() => ({
     id: form.id,
-    key: '?',
-    userUid: '?',
-    uid: '?',
     answers: Object.values(answers),
+    writer: BlobWriter.generate('formAnswer'),
   }), [form, answers]);
 
-  function submit() {
-    addFormAnswer(formAnswer);
+  async function submit() {
+    await addFormAnswers(formAnswer);
     localStorage.removeItem(`grenzexpress-${form.id}`);
     history.replace('/');
   }

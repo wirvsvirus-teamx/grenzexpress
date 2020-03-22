@@ -9,7 +9,7 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core';
-import React from 'react';
+import React, { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { FinishedForm } from '../../components/finished-form/FinishedForm';
@@ -18,16 +18,15 @@ import { useUser } from '../../contexts/User';
 import { forms } from '../../data/forms';
 
 const useStyles = makeStyles(() => createStyles({
-  content: {
-    paddingTop: '0',
-    paddingBottom: '0',
-  },
   header: {
     margin: 0,
     paddingBottom: 0,
   },
+  content: {
+    paddingTop: '0',
+    paddingBottom: '0',
+  },
 }));
-
 
 export const Main = () => {
   const { user } = useUser();
@@ -58,8 +57,10 @@ export const Main = () => {
             </Card>
           </Grid>
         ))}
-        {user.answeredForms.map((formAnswer) => <FinishedForm formAnswer={formAnswer} />)}
+        {user.answeredForms.map(
+          (formAnswer, i) => <FinishedForm key={i} formAnswer={formAnswer} />,
+        )}
       </Grid>
-    </Layout>
+    </Layout >
   );
 };

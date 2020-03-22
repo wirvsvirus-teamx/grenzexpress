@@ -11,6 +11,7 @@ export const ChoiceInput = ({ question, setAnswer, answer }: IQuestionProps<'mul
       <RadioGroup aria-label="gender" name="gender1" value={!!answer && answer.choice} onChange={(e) => setAnswer({ id: question.id, type: 'multiple-choice', choice: e.target.value })}>
         {question.choices.map((choice) => (
           <FormControlLabel
+            key={choice}
             control={<Radio />}
             label={choice}
             value={choice}

@@ -15,7 +15,8 @@ import React from 'react';
 import { useHistory } from 'react-router';
 
 import { forms } from '../../data/forms';
-import { IFormAnswer } from '../../types';
+import { IFormAnswers } from '../../types/answers';
+import { IAnswer } from '../../types/form';
 
 const useStyles = makeStyles(() => createStyles({
   red: {
@@ -50,9 +51,11 @@ const useStyles = makeStyles(() => createStyles({
 export const FinishedForm = ({
   formAnswer,
   headOnly,
+  wholeWidth,
 }: {
-  formAnswer: IFormAnswer;
+  formAnswer: IFormAnswers;
   headOnly?: true;
+  wholeWidth?: true;
 }) => {
   const form = forms.find((it) => it.id === formAnswer.id);
   const classes = useStyles();
@@ -65,9 +68,14 @@ export const FinishedForm = ({
     (answerID: any) => formAnswer.answers.find((it) => it.id === answerID) as any,
   );
 
-  const token = window.btoa(`${formAnswer.uid}@${formAnswer.key}`);
-  const innerUrl = `http://localhost/load-form#${token}`;
+  const token = `${formAnswer.writer.publicKey.base64url}@${formAnswer.writer.symmetricKey.base64url}`;
+  const innerUrl = `https://grenz.express/load-form#${token}`;
   const url = `/qr#${innerUrl}`;
+  const firstNameAnswer = formAnswer.answers.find((it) => it.id === 'first-name') as IAnswer<'text-input'>;
+  const firstName = firstNameAnswer?.value || '';
+  const lastNameAnswer = formAnswer.answers.find((it) => it.id === 'last-name') as IAnswer<'text-input'>;
+  const lastName = lastNameAnswer?.value || '';
+  const name = `${firstName} ${lastName}`;
 
   const color = ({
     valid: 'green',
@@ -76,11 +84,12 @@ export const FinishedForm = ({
   } as const)[state];
 
   return (
-    <Grid item sm={4} xs={12}>
+    <Grid item sm={wholeWidth ? 12 : 4} xs={12}>
       <Card>
         <CardHeader
           className={classes.header}
           title={form.title}
+          subheader={name}
         />
         <CardContent className={classes.content}>
           <Box className={classes.message}>

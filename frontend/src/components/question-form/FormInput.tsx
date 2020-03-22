@@ -10,9 +10,12 @@ export const FormInput = ({ answer, setAnswer, question }: IQuestionProps<'uploa
   function checkFile() {
     if (!input || !input?.current?.files || input?.current?.files?.length < 1) return;
 
-    const data = URL.createObjectURL(input.current.files[0]);
-
-    setAnswer({ id: question.id, type: 'upload-form', image: data });
+    const reader = new FileReader();
+    reader.readAsDataURL(input.current.files[0]);
+    reader.onloadend = () => {
+      const base64data = reader.result as string;
+      setAnswer({ id: question.id, type: 'upload-form', image: base64data });
+    };
   }
 
   return (
@@ -25,7 +28,7 @@ export const FormInput = ({ answer, setAnswer, question }: IQuestionProps<'uploa
           <Typography color="textSecondary" component="p" variant="body2">
             {question.description}
           </Typography>
-          {answer && <img src={answer.image} style={{ maxWidth: '300px' }} />}
+          {answer && <img alt={question.title} src={answer.image} style={{ maxWidth: '300px' }} />}
         </CardContent>
       </CardActionArea>
       <CardActions>
