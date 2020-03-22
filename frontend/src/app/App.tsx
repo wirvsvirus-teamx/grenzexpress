@@ -25,7 +25,7 @@ export const App = () => (
         <Route exact path="/qr" strict>
           <ShowQR />
         </Route>
-        <Route exact path="/form" strict>
+        <Route exact path="/load-form" strict>
           <LoadForm />
         </Route>
         <Route path="/">
