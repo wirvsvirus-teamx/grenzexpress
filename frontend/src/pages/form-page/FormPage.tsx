@@ -2,23 +2,21 @@
 import {
   Box, Button, Card, CardActions, CardContent, Grid, Typography,
 } from '@material-ui/core';
-import { FinishedForm } from 'components/finished-form/FinishedForm';
-import { useUser } from 'contexts/User';
 import React, {
   FunctionComponent, useCallback, useEffect, useMemo,
   useState,
 } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
-import classes from '*.module.scss';
-
 import { DateInput, Signature } from '../../components';
+import { FinishedForm } from '../../components/finished-form/FinishedForm';
 import { Layout } from '../../components/layout/Layout';
 import { ChoiceInput } from '../../components/question-choice/Choice';
 import { FormInput } from '../../components/question-form/FormInput';
 import { NumberInput } from '../../components/question-number-input/NumberInput';
 import { TextInput } from '../../components/question-text-input/TextInput';
 import { YesNo } from '../../components/question-yesno/YesNo';
+import { useUser } from '../../contexts/User';
 import { getForm, questions } from '../../data/forms';
 import { IAnswer, IForm, IPage } from '../../types';
 import { NotFound } from '../not-found/NotFound';

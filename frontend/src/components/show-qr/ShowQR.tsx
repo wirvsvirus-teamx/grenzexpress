@@ -2,10 +2,11 @@ import {
   Card, CardActionArea, CardActions, CardContent, CardMedia, Container, Typography,
 } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import { Layout } from 'components/layout/Layout';
 import QRCode from 'qrcode.react';
 import React from 'react';
 import { Link } from 'react-router-dom';
+
+import { Layout } from '../layout/Layout';
 
 export const ToQR = ({ url }: { url: string }) => <Link to={`/qr#${url}`} />;
 

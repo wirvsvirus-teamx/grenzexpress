@@ -36,7 +36,9 @@ export const FinishedForm = ({
 
   if (!form) throw new Error(`Form with id ${formAnswer.id} not found`);
 
-  const { state, message } = form?.validate((answerID: any) => formAnswer.answers.find((it) => it.id === answerID) as any);
+  const { state, message } = form?.validate(
+    (answerID: any) => formAnswer.answers.find((it) => it.id === answerID) as any,
+  );
 
   const token = window.btoa(`${formAnswer.uid}@${formAnswer.key}`);
   const innerUrl = `http://localhost/load-form#${token}`;

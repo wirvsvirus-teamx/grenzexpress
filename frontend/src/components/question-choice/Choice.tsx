@@ -12,7 +12,13 @@ export const ChoiceInput = ({ question, setAnswer, answer }: IQuestionProps<'mul
     <FormControl component="fieldset">
       <FormLabel component="legend">{question.question}</FormLabel>
       <RadioGroup aria-label="gender" name="gender1" value={!!answer && answer.choice} onChange={(e) => setAnswer({ id: question.id, type: 'multiple-choice', choice: e.target.value })}>
-        {question.choices.map((choice) => <FormControlLabel control={<Radio />} label={choice} value={choice} />)}
+        {question.choices.map((choice) => (
+          <FormControlLabel
+            control={<Radio />}
+            label={choice}
+            value={choice}
+          />
+        ))}
       </RadioGroup>
     </FormControl>
   </div>
