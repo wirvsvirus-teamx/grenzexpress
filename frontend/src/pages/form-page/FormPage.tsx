@@ -84,7 +84,7 @@ export const Page = ({ page, form, step }: { page: IPage; form: IForm; step: num
           };
 
           return (
-            <>
+            <div key={id}>
               {question.type === 'yes-no' && <YesNo {...props} />}
               {question.type === 'text-input' && <TextInput {...props} />}
               {question.type === 'number-input' && <NumberInput {...props} />}
@@ -93,7 +93,7 @@ export const Page = ({ page, form, step }: { page: IPage; form: IForm; step: num
               {question.type === 'upload-form' && <FormInput {...props} />}
               {question.type === 'signature' && <Signature {...props} />}
               <br />
-            </>
+            </div>
           );
         })}
       </Box>
