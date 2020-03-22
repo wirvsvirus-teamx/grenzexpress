@@ -42,12 +42,15 @@ export const Signature = ({
     const context = canvas.getContext('2d');
     if (context && !answer) {
       const touchStart = (evt: TouchEvent) => {
+        evt.preventDefault();
         startSignature(evt.touches[0]);
       };
       const touchMove = (evt: TouchEvent) => {
+        evt.preventDefault();
         updateSignature(evt.changedTouches[0]);
       };
       const touchEnd = (evt: TouchEvent) => {
+        evt.preventDefault();
         endSignature(evt.targetTouches[0]);
       };
       const startSignature = (evt: MouseEvent | Touch) => {
