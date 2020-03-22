@@ -4,7 +4,7 @@ import React from 'react';
 import { IQuestionProps } from '../../types';
 
 export const TextInput = ({
-  question, answer, setAnswer, removeAnswer
+  question, answer, setAnswer, removeAnswer,
 }: IQuestionProps<'text-input'>) => {
   function setValue(value: string) {
     if (value) setAnswer({ id: question.id, type: 'text-input', value });
