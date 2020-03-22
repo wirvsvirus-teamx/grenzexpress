@@ -6,7 +6,7 @@ import { once } from 'events';
 import { createServer } from 'http';
 import App from 'koa';
 import koaBunyanLogger, { requestIdContext, requestLogger } from 'koa-bunyan-logger';
-import { useKoaServer } from 'routing-controllers';
+import { HttpError, useKoaServer } from 'routing-controllers';
 
 import { database } from './database';
 import { logger } from './logger';
@@ -26,6 +26,18 @@ async function main(): Promise<void> {
     }
   });
 
+  app.use(async (ctx, next) => {
+    try {
+      await next();
+    } catch (err) {
+      if (err instanceof HttpError && err.httpCode) {
+        ctx.status = err.httpCode;
+        return;
+      }
+      throw err;
+    }
+  });
+
   app.use(koaBunyanLogger(logger));
   app.use(requestIdContext({
     field: 'reqId',
@@ -40,6 +52,7 @@ async function main(): Promise<void> {
       whitelist: true,
       forbidUnknownValues: true,
     },
+    defaultErrorHandler: false,
     defaults: {
       paramOptions: {
         required: true,

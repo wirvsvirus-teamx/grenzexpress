@@ -1,11 +1,21 @@
 import { sign, SignKeyPair } from 'tweetnacl';
 
+import { base64url } from './util';
+
 const { keyPair } = sign;
 
 export class PublicKey {
   constructor(
     private publicKey: Uint8Array,
   ) { }
+
+  static fromBase64url(data: string): PublicKey {
+    return new PublicKey(base64url.decode(data));
+  }
+
+  get base64url(): string {
+    return base64url.encode(this.publicKey);
+  }
 
   verify(msg: Uint8Array, sig: Uint8Array): boolean {
     return sign.detached.verify(msg, sig, this.publicKey);
