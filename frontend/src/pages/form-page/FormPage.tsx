@@ -129,9 +129,9 @@ export const FormSubmit = ({ form }: { form: IForm }) => {
 
   return (
     <Layout title="Grenzexpress">
-      <Grid>
-        <FinishedForm formAnswer={formAnswer} />
-        <Grid item sm={8} xs={12}>
+      <Grid container spacing={2}>
+        <FinishedForm formAnswer={formAnswer} headOnly />
+        <Grid item sm={4} xs={12}>
           <Card>
             <CardContent>
               <Typography component="h2" variant="h5">
