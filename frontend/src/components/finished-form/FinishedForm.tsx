@@ -7,7 +7,8 @@ import React from 'react';
 import { useHistory } from 'react-router';
 
 import { forms } from '../../data/forms';
-import { IAnswer, IAnswerType, IFormAnswer } from '../../types';
+import { IFormAnswers } from '../../types/answers';
+import { IAnswer } from '../../types/form';
 
 const useStyles = makeStyles(() => createStyles({
   red: {
@@ -26,7 +27,7 @@ export const FinishedForm = ({
   headOnly,
   wholeWidth,
 }: {
-  formAnswer: IFormAnswer;
+  formAnswer: IFormAnswers;
   headOnly?: true;
   wholeWidth?: true;
 }) => {
@@ -41,7 +42,7 @@ export const FinishedForm = ({
     (answerID: any) => formAnswer.answers.find((it) => it.id === answerID) as any,
   );
 
-  const token = window.btoa(`${formAnswer.uid}@${formAnswer.key}`);
+  const token = `${formAnswer.writer.publicKey.base64url}@${formAnswer.writer.symmetricKey.base64url}`;
   const innerUrl = `https://grenz.express/load-form#${token}`;
   const url = `/qr#${innerUrl}`;
   const firstNameAnswer = formAnswer.answers.find((it) => it.id === 'first-name') as IAnswer<'text-input'>;
@@ -69,17 +70,17 @@ export const FinishedForm = ({
             {message}
           </p>
           {state === 'unknown' && (
-          <p>
-            Die Entscheidung trifft ein Kollege vor Ort.
-          </p>
+            <p>
+              Die Entscheidung trifft ein Kollege vor Ort.
+            </p>
           )}
         </CardContent>
         {!headOnly && (
-        <CardActions>
-          <Button color="primary" variant="contained" onClick={() => history.push(url)}>
-            Vorzeigen
-          </Button>
-        </CardActions>
+          <CardActions>
+            <Button color="primary" variant="contained" onClick={() => history.push(url)}>
+              Vorzeigen
+            </Button>
+          </CardActions>
         )}
       </Card>
     </Grid>

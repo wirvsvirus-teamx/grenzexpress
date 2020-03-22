@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
+import { BlobWriter } from '../../api';
 import { DateInput, Signature } from '../../components';
 import { FinishedForm } from '../../components/finished-form/FinishedForm';
 import { Layout } from '../../components/layout/Layout';
@@ -18,7 +19,8 @@ import { TextInput } from '../../components/question-text-input/TextInput';
 import { YesNo } from '../../components/question-yesno/YesNo';
 import { useUser } from '../../contexts/User';
 import { getForm, questions } from '../../data/forms';
-import { IAnswer, IForm, IPage } from '../../types';
+import { IFormAnswers } from '../../types/answers';
+import { IAnswer, IForm, IPage } from '../../types/form';
 import { NotFound } from '../not-found/NotFound';
 
 interface FormPageParams {
@@ -108,19 +110,17 @@ export const Page = ({ page, form, step }: { page: IPage; form: IForm; step: num
 
 export const FormSubmit = ({ form }: { form: IForm }) => {
   const { answers } = useAnswers(form.id);
-  const { addFormAnswer } = useUser();
+  const { addFormAnswers } = useUser();
   const history = useHistory();
 
-  const formAnswer = useMemo(() => ({
+  const formAnswer: IFormAnswers = useMemo(() => ({
     id: form.id,
-    key: '?',
-    userUid: '?',
-    uid: '?',
     answers: Object.values(answers),
+    writer: BlobWriter.generate('formAnswer'),
   }), [form, answers]);
 
-  function submit() {
-    addFormAnswer(formAnswer);
+  async function submit() {
+    await addFormAnswers(formAnswer);
     localStorage.removeItem(`grenzexpress-${form.id}`);
     history.replace('/');
   }

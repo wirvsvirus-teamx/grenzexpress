@@ -1,23 +1,45 @@
 import {
   Card, CardContent, CircularProgress, Grid, Typography,
 } from '@material-ui/core';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 
-import { useUser } from '../../contexts/User';
+import { BlobReader } from '../../api';
+import { PublicKey, SymmetricKey } from '../../crypto';
 import { questions } from '../../data/forms';
-import { IAnswer, IFormAnswer } from '../../types';
+import { IFormAnswers } from '../../types/answers';
+import { IAnswer } from '../../types/form';
 import { FinishedForm } from '../finished-form/FinishedForm';
 import { Layout } from '../layout/Layout';
 
 export const LoadForm = () => {
-  const data = window.atob(window.location.hash.slice(1));
-  const [publicKey, secret] = data.split('@');
+  const [formAnswers, setFormAnswers] = useState<IFormAnswers>();
 
-  // Load some magic from server
+  const { hash } = useLocation();
 
-  const result: IFormAnswer | undefined = useUser().user.answeredForms[0];
+  const [publicKey, symmetricKey] = hash.slice(1).split('@');
+  useEffect(() => {
+    setFormAnswers(undefined);
 
-  if (!result) {
+    const blob = new BlobReader(
+      'formAnswer',
+      SymmetricKey.fromBase64url(symmetricKey),
+      PublicKey.fromBase64url(publicKey),
+    );
+
+    blob.get().then((data) => {
+      setFormAnswers({
+        writer: blob,
+        ...data,
+      });
+    }).catch(
+      (err) => {
+        console.error('Failed to load form answers:', err);
+      },
+    );
+  }, [symmetricKey, publicKey]);
+
+  if (!formAnswers) {
     return (
       <Layout title="Grenzexpress">
         <CircularProgress />
@@ -28,8 +50,8 @@ export const LoadForm = () => {
   return (
     <Layout title="Grenzexpress">
       <Grid container spacing={2}>
-        <FinishedForm formAnswer={result} headOnly wholeWidth />
-        {result.answers.map((answer) => {
+        <FinishedForm formAnswer={formAnswers} headOnly wholeWidth />
+        {formAnswers.answers.map((answer) => {
           const question = questions.find((q) => q.id === answer.id);
 
           let content = <></>;
@@ -68,9 +90,9 @@ export const LoadForm = () => {
                 <CardContent>
                   <Typography component="h2" gutterBottom variant="h5">
                     {(question as any)?.title
-                    ?? (question as any)?.name
-                    ?? (question as any)?.question
-                    ?? 'Signatur'}
+                      ?? (question as any)?.name
+                      ?? (question as any)?.question
+                      ?? 'Signatur'}
                   </Typography>
                   <Typography color="textSecondary" component="p" variant="body2">
                     {content}
