@@ -1,0 +1,4 @@
+docker-compose*.yml
+.eslintrc.js
+README.md
+node_modules
