@@ -1,7 +1,14 @@
 import {
+  Box,
   Button,
-  Card, CardActions, CardContent, CardHeader, createStyles, Grid, IconButton,
-  makeStyles, Typography,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  createStyles,
+  Grid,
+  makeStyles,
+  Typography,
 } from '@material-ui/core';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import React from 'react';
@@ -19,6 +26,24 @@ const useStyles = makeStyles(() => createStyles({
   },
   yellow: {
     color: '#f9b000',
+  },
+  header: {
+    margin: 0,
+    paddingBottom: 0,
+  },
+  message: {
+    margin: 0,
+    display: 'flex',
+    alignItems: 'center',
+    paddingTop: '0',
+    paddingBottom: '0',
+  },
+  content: {
+    paddingTop: '0',
+    paddingBottom: '0',
+  },
+  dot: {
+    padding: '10px',
   },
 }));
 
@@ -54,26 +79,26 @@ export const FinishedForm = ({
     <Grid item sm={4} xs={12}>
       <Card>
         <CardHeader
-          subheader=""
+          className={classes.header}
           title={form.title}
         />
-        <CardContent className={classes[color]}>
-          <FiberManualRecordIcon />
-          <p>
-            {message}
-          </p>
+        <CardContent className={classes.content}>
+          <Box className={classes.message}>
+            <FiberManualRecordIcon className={[classes[color], classes.dot].join(' ')} />
+            <Typography>{message}</Typography>
+          </Box>
           {state === 'unknown' && (
-          <p>
-            Die Entscheidung trifft ein Kollege vor Ort.
-          </p>
+            <Typography >
+              Die Entscheidung trifft ein Kollege vor Ort.
+            </Typography>
           )}
         </CardContent>
         {!headOnly && (
-        <CardActions>
-          <Button color="primary" variant="contained" onClick={() => history.push(url)}>
-            Vorzeigen
-          </Button>
-        </CardActions>
+          <CardActions>
+            <Button color="primary" variant="contained" onClick={() => history.push(url)}>
+              QR-Code Vorzeigen
+            </Button>
+          </CardActions>
         )}
       </Card>
     </Grid>

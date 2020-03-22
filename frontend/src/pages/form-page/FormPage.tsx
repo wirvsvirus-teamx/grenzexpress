@@ -1,11 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import {
-  Box, Button, Card, CardActions, CardContent, Grid, Typography,
-} from '@material-ui/core';
-import React, {
-  FunctionComponent, useCallback, useEffect, useMemo,
-  useState,
-} from 'react';
+import { Box, Button, Card, CardActions, CardContent, Grid, Typography } from '@material-ui/core';
+import React, { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import { DateInput, Signature } from '../../components';
@@ -70,7 +65,7 @@ export const Page = ({ page, form, step }: { page: IPage; form: IForm; step: num
   };
 
   return (
-    <Layout title={`Grenzexpress - ${form.title}`}>
+    <Layout title={`Grenzexpress - ${form.title}`} home={false}>
       {page.description ?? ''}
       <Box>
         <Typography component="h2" variant="h6">{page.title}</Typography>
@@ -126,7 +121,7 @@ export const FormSubmit = ({ form }: { form: IForm }) => {
   }
 
   return (
-    <Layout title="Grenzexpress">
+    <Layout title="Grenzexpress" home={false}>
       <Grid container spacing={2}>
         <FinishedForm formAnswer={formAnswer} headOnly />
         <Grid item sm={4} xs={12}>
