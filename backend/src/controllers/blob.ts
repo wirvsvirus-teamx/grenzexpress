@@ -5,7 +5,7 @@ import {
   JsonController, NotFoundError,
   Param, Put, UnauthorizedError,
 } from 'routing-controllers';
-import nacl from 'tweetnacl';
+import { sign } from 'tweetnacl';
 
 import { Database, Db } from '../database';
 import { Logger } from '../logger';
@@ -28,10 +28,9 @@ function extractSignatureFromAuthHeader(authHeader: string): Buffer {
 }
 
 function signatureIsValid(message: string, signature: Buffer, publicKey: string): boolean {
-  const msg = new TextEncoder().encode(message);
-  const sig = Uint8Array.from(signature);
-  const key = new TextEncoder().encode(publicKey);
-  return nacl.sign.detached.verify(msg, sig, key);
+  const msg = Buffer.from(message, 'base64');
+  const key = Buffer.from(publicKey.replace(/-/g, '+').replace(/_/g, '/'), 'base64');
+  return sign.detached.verify(msg, signature, key);
 }
 
 @JsonController('/blob')
