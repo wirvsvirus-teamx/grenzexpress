@@ -17,6 +17,8 @@ export type BlobTypes = {
   [B in BlobType]: BlobClasses[B] extends Class<infer T> ? T : never;
 };
 
+type BlobData<B extends BlobType> = Omit<BlobTypes[B], 'type'>;
+
 function checkOk(res: Response) {
   if (!res.ok) {
     throw new Error(`API request failed: ${res.statusText}`);
@@ -95,8 +97,11 @@ export class BlobWriter<B extends BlobType> extends BlobAPI<B> {
     }
   }
 
-  async set(msg: BlobTypes[B]): Promise<void> {
-    const validated = await this.validate(msg);
+  async set(msg: BlobData<B>): Promise<void> {
+    const validated = await this.validate({
+      ...msg,
+      type: this.blobType,
+    });
     const data = this.symmetricKey.encrypt(validated);
     const res = await this.fetchSigned(this.url, data, {
       method: 'PUT',
