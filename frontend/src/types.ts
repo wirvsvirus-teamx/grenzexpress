@@ -24,6 +24,7 @@ export type IQuestionType = {
     title: string;
     description: string;
   };
+  'signature': {};
 };
 
 // A question:
@@ -56,6 +57,9 @@ export type IAnswerType = {
   };
   'upload-form': {
     image: string /* base64?*/;
+  };
+  'signature': {
+    signature: string;
   };
 };
 
@@ -123,4 +127,5 @@ export type IQuestionProps<Q extends IQuestion['type']> = {
   question: IQuestion<Q>;
   answer?: IAnswer<Q>;
   setAnswer(answer: IAnswer<Q>): any;
+  removeAnswer(id: IAnswer['id']): void;
 }

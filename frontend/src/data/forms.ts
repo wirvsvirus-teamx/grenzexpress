@@ -41,7 +41,7 @@ export const questions: IQuestion[] = [
     shared: true,
   },
   {
-    type: 'number-input',
+    type: 'text-input',
     id: 'postal-code',
     name: 'Postleitzahl',
     shared: true,
@@ -163,6 +163,12 @@ export const questions: IQuestion[] = [
     name: 'Ärztliche Bescheinigung',
     shared: false,
   },
+  // signature
+  {
+    id: 'signature',
+    type: 'signature',
+    shared: false,
+  },
 ];
 
 export const forms: IForm[] = [
@@ -252,6 +258,11 @@ export const forms: IForm[] = [
           const reason = get<'multiple-choice'>('other-reason');
           return reason && ['Ich liefere Waren', 'Ich arbeite in Deutschland'].includes(reason.choice);
         },
+      },
+      {
+        title: 'Unterschrift',
+        description: 'Mit der Unterschrift bestätigen sie, alle Angaben wahrheitsgemäß gemacht zu haben.',
+        questions: ['signature'],
       },
     ],
     validate(get) {

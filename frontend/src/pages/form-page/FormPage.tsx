@@ -1,17 +1,22 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { Box, Button, Typography } from '@material-ui/core';
+import {
+  Box, Button, Card, CardActions, CardContent, Grid, Typography,
+} from '@material-ui/core';
 import React, {
-  FunctionComponent, useCallback, useEffect, useState,
+  FunctionComponent, useCallback, useEffect, useMemo,
+  useState,
 } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import { DateInput, Signature } from '../../components';
+import { FinishedForm } from '../../components/finished-form/FinishedForm';
 import { Layout } from '../../components/layout/Layout';
 import { ChoiceInput } from '../../components/question-choice/Choice';
 import { FormInput } from '../../components/question-form/FormInput';
 import { NumberInput } from '../../components/question-number-input/NumberInput';
 import { TextInput } from '../../components/question-text-input/TextInput';
 import { YesNo } from '../../components/question-yesno/YesNo';
+import { useUser } from '../../contexts/User';
 import { getForm, questions } from '../../data/forms';
 import { IAnswer, IForm, IPage } from '../../types';
 import { NotFound } from '../not-found/NotFound';
@@ -31,7 +36,7 @@ export const FormPage: FunctionComponent<{}> = () => {
   const step = +(_step ?? 0);
 
   if (step >= form.pages.length) {
-    return <FormSubmit />;
+    return <FormSubmit form={form} />;
   }
 
   const page = form.pages[step];
@@ -43,7 +48,7 @@ export const FormPage: FunctionComponent<{}> = () => {
 
 export const Page = ({ page, form, step }: { page: IPage; form: IForm; step: number }) => {
   // Memoize answers across page reloads (and navigation)
-  const { answers, setAnswer } = useAnswers(form.id);
+  const { answers, setAnswer, removeAnswer } = useAnswers(form.id);
   const history = useHistory();
   const prevEnabled = step > 0;
   const nextEnabled = page && page.questions.every((question) => question in answers);
@@ -61,15 +66,7 @@ export const Page = ({ page, form, step }: { page: IPage; form: IForm; step: num
   };
 
   const prevPage = () => {
-    let index = step;
-    do {
-      index -= 1;
-    } while (
-      index > 0
-      && form.pages[index].isNeeded
-      && !(form.pages[index] as any).isNeeded((answerID: string) => answers[answerID] as any)
-    );
-    history.push(`/form/${form.id}/${index}`);
+    history.goBack();
   };
 
   return (
@@ -83,7 +80,7 @@ export const Page = ({ page, form, step }: { page: IPage; form: IForm; step: num
           const answer = answers[id] as any;
 
           const props = {
-            setAnswer, answer, question, key: question.id,
+            setAnswer, removeAnswer, answer, question, key: question.id,
           };
 
           return (
@@ -94,6 +91,7 @@ export const Page = ({ page, form, step }: { page: IPage; form: IForm; step: num
               {question.type === 'date-input' && <DateInput {...props} />}
               {question.type === 'multiple-choice' && <ChoiceInput {...props} />}
               {question.type === 'upload-form' && <FormInput {...props} />}
+              {question.type === 'signature' && <Signature {...props} />}
               <br />
             </>
           );
@@ -108,24 +106,52 @@ export const Page = ({ page, form, step }: { page: IPage; form: IForm; step: num
   );
 };
 
-/*
-      addFormAnswer({
-        answers: Object.values(answers),
-        id: form.id,
-        key: 'whatever',
-        uid: 'test',
-        userUid: 'test', // TODO
-      });
-*/
-export const FormSubmit = () => (
-  <Layout title="Grenzexpress">
-    <Typography component="h2" variant="h6">Unterschrift</Typography>
-    <Signature />
-    <Box mt={3}>
-      <Button variant="contained">Speichern</Button>
-    </Box>
-  </Layout>
-);
+export const FormSubmit = ({ form }: { form: IForm }) => {
+  const { answers } = useAnswers(form.id);
+  const { addFormAnswer } = useUser();
+  const history = useHistory();
+
+  const formAnswer = useMemo(() => ({
+    id: form.id,
+    key: '?',
+    userUid: '?',
+    uid: '?',
+    answers: Object.values(answers),
+  }), [form, answers]);
+
+  function submit() {
+    addFormAnswer(formAnswer);
+    localStorage.removeItem(`grenzexpress-${form.id}`);
+    history.replace('/');
+  }
+
+  return (
+    <Layout title="Grenzexpress">
+      <Grid container spacing={2}>
+        <FinishedForm formAnswer={formAnswer} headOnly />
+        <Grid item sm={4} xs={12}>
+          <Card>
+            <CardContent>
+              <Typography component="h2" variant="h5">
+                Formular absenden
+              </Typography>
+              <p>
+                Wenn du das Formular absendest,
+                kannst du die Daten an der Grenze einfach mit dem Grenzpersonal teilen.
+                Deine Daten werden geschützt,
+                und nur wer einen QR Code besitzt kann darauf zugreifen.
+              </p>
+            </CardContent>
+            <CardActions>
+              <Button color="primary" variant="contained" onClick={submit}>Formular Absenden</Button>
+            </CardActions>
+          </Card>
+        </Grid>
+      </Grid>
+    </Layout>
+
+  );
+};
 
 const useAnswers = (form: string) => {
   const [answers, setAnswers] = useState<{ [id: string]: IAnswer }>(() => {
@@ -146,5 +172,13 @@ const useAnswers = (form: string) => {
     setAnswers((a) => ({ ...a, [answer.id]: answer }));
   }, [setAnswers]);
 
-  return { answers, setAnswer };
+  const removeAnswer = useCallback((id: string) => {
+    setAnswers((a) => {
+      const copy = { ...a };
+      delete copy[id];
+      return copy;
+    });
+  }, [setAnswers]);
+
+  return { answers, setAnswer, removeAnswer };
 };
