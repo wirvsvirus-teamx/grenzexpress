@@ -1,6 +1,14 @@
 import {
+  Box,
   Button,
-  Card, CardActions, CardContent, CardHeader, createStyles, Grid, makeStyles,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  createStyles,
+  Grid,
+  makeStyles,
+  Typography,
 } from '@material-ui/core';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import React from 'react';
@@ -19,6 +27,24 @@ const useStyles = makeStyles(() => createStyles({
   },
   yellow: {
     color: '#f9b000',
+  },
+  header: {
+    margin: 0,
+    paddingBottom: 0,
+  },
+  message: {
+    margin: 0,
+    display: 'flex',
+    alignItems: 'center',
+    paddingTop: '0',
+    paddingBottom: '0',
+  },
+  content: {
+    paddingTop: '0',
+    paddingBottom: '0',
+  },
+  dot: {
+    padding: '10px',
   },
 }));
 
@@ -61,24 +87,27 @@ export const FinishedForm = ({
     <Grid item sm={wholeWidth ? 12 : 4} xs={12}>
       <Card>
         <CardHeader
+          className={classes.header}
           subheader={name}
           title={form.title}
         />
-        <CardContent className={classes[color]}>
-          <FiberManualRecordIcon />
-          <p>
-            {message}
-          </p>
-          {state === 'unknown' && (
-            <p>
-              Die Entscheidung trifft ein Kollege vor Ort.
-            </p>
-          )}
+        <CardContent className={classes.content}>
+          <Box className={classes.message}>
+            <FiberManualRecordIcon className={[classes[color], classes.dot].join(' ')} />
+            <div>
+              <Typography>{message}</Typography>
+              {state === 'unknown' && (
+                <Typography>
+                  Die Entscheidung trifft ein Kollege vor Ort.
+                </Typography>
+              )}
+            </div>
+          </Box>
         </CardContent>
         {!headOnly && (
           <CardActions>
             <Button color="primary" variant="contained" onClick={() => history.push(url)}>
-              Vorzeigen
+              QR-Code Vorzeigen
             </Button>
           </CardActions>
         )}

@@ -41,14 +41,14 @@ export const LoadForm = () => {
 
   if (!formAnswers) {
     return (
-      <Layout title="Grenzexpress">
+      <Layout home={false} title="Grenzexpress">
         <CircularProgress />
       </Layout>
     );
   }
 
   return (
-    <Layout title="Grenzexpress">
+    <Layout home={false} title="Grenzexpress">
       <Grid container spacing={2}>
         <FinishedForm formAnswer={formAnswers} headOnly wholeWidth />
         {formAnswers.answers.map((answer) => {
