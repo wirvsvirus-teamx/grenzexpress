@@ -1,0 +1,8 @@
+port: 8000
+logLevel: debug
+db:
+  host: database
+  port: 5432
+  username: test
+  password: test
+  database: grenzexpress
