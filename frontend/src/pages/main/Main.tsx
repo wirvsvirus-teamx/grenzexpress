@@ -16,7 +16,7 @@ export const Main = () => {
     <Layout title="Grenzexpress">
       <Grid container spacing={3}>
         {user.answeredForms.map(
-          (formAnswer) => <FinishedForm key={formAnswer.uid} formAnswer={formAnswer} />,
+          (formAnswer, i) => <FinishedForm key={i} formAnswer={formAnswer} />,
         )}
         {forms.map((form) => (
           <Grid key={form.id} item sm={4} xs={12}>

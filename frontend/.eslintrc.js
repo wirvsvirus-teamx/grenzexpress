@@ -87,6 +87,7 @@ module.exports = {
 
     'react/jsx-filename-extension': ['error', { extensions: ['.jsx', '.tsx'] }],
     'react/jsx-sort-props': ['error', { callbacksLast: true, reservedFirst: true }],
+    'react/no-array-index-key': 'off',
     'react/prop-types': 'off',
   },
 };
