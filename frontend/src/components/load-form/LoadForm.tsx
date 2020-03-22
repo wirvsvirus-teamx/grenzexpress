@@ -15,11 +15,10 @@ import { Layout } from '../layout/Layout';
 export const LoadForm = () => {
   const [formAnswers, setFormAnswers] = useState<IFormAnswers>();
 
-  const { hash, ...location } = useLocation();
+  const { hash } = useLocation();
+
   const [publicKey, symmetricKey] = hash.slice(1).split('@');
   useEffect(() => {
-    console.log({ hash, ...location });
-
     setFormAnswers(undefined);
 
     const blob = new BlobReader(
@@ -38,7 +37,7 @@ export const LoadForm = () => {
         console.error('Failed to load form answers:', err);
       },
     );
-  }, [symmetricKey, publicKey, hash, location]);
+  }, [symmetricKey, publicKey]);
 
   if (!formAnswers) {
     return (
