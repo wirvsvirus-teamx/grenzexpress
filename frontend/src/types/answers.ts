@@ -1,16 +1,11 @@
 /* eslint-disable @typescript-eslint/interface-name-prefix */
 
-import { BlobWriter } from '../api';
-import { IAnswer, IForm, UID } from './form';
+import { BlobReader } from '../api';
+import { IAnswer, IForm } from './form';
 
 // answers a certain form
-export type IFormAnswers = {
-  userUid: UID;
-  uid: UID;
+export interface IFormAnswers {
   id: IForm['id'];
   answers: IAnswer[];
-};
-
-export interface IStoredFormAnswers extends IFormAnswers {
-  writer: BlobWriter<'formAnswer'>;
+  writer: BlobReader<'formAnswer'>;
 }

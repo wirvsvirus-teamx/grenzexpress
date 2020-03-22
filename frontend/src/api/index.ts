@@ -26,11 +26,11 @@ function checkOk(res: Response) {
 }
 
 abstract class BlobAPI<B extends BlobType> {
-  protected abstract readonly publicKey: PublicKey;
+  abstract readonly publicKey: PublicKey;
 
   constructor(
     protected blobType: B,
-    protected symmetricKey: SymmetricKey<BlobTypes[B]>,
+    public readonly symmetricKey: SymmetricKey<BlobTypes[B]>,
   ) { }
 
   protected get url(): string {
@@ -58,16 +58,25 @@ abstract class BlobAPI<B extends BlobType> {
     );
     return msg;
   }
+
+  isWriter(): this is BlobWriter<B> {
+    return this instanceof BlobWriter;
+  }
 }
 
 export class BlobReader<B extends BlobType> extends BlobAPI<B> {
   constructor(
     blobType: B,
     symmetricKey: SymmetricKey<BlobTypes[B]>,
-    protected publicKey: PublicKey,
+    readonly publicKey: PublicKey,
   ) {
     super(blobType, symmetricKey);
   }
+}
+
+interface BlobWriterJSON {
+  symmetricKey: string;
+  secretKey: string;
 }
 
 export class BlobWriter<B extends BlobType> extends BlobAPI<B> {
@@ -87,8 +96,8 @@ export class BlobWriter<B extends BlobType> extends BlobAPI<B> {
     );
   }
 
-  static fromJSON<B extends BlobType>(blobType: B, data: string): BlobWriter<B> {
-    const { symmetricKey, secretKey } = JSON.parse(data);
+  static fromJSON<B extends BlobType>(blobType: B, data: any): BlobWriter<B> {
+    const { symmetricKey, secretKey } = data;
     return new BlobWriter(
       blobType,
       new SymmetricKey(base64.decode(symmetricKey)),
@@ -96,11 +105,11 @@ export class BlobWriter<B extends BlobType> extends BlobAPI<B> {
     );
   }
 
-  toJSON(): string {
-    return JSON.stringify({
-      symmetricKey: this.symmetricKey,
-      secretKey: this.secretKey,
-    });
+  toJSON(): object {
+    return {
+      symmetricKey: base64.encode(this.symmetricKey.key),
+      secretKey: base64.encode(this.secretKey.secretKey),
+    };
   }
 
   get publicKey(): PublicKey {

@@ -20,6 +20,8 @@ import { useUser } from '../../contexts/User';
 import { getForm, questions } from '../../data/forms';
 import { IAnswer, IForm, IPage } from '../../types/form';
 import { NotFound } from '../not-found/NotFound';
+import { IFormAnswers } from '../../types/answers';
+import { BlobWriter } from '../../api';
 
 interface FormPageParams {
   formId: string;
@@ -108,19 +110,17 @@ export const Page = ({ page, form, step }: { page: IPage; form: IForm; step: num
 
 export const FormSubmit = ({ form }: { form: IForm }) => {
   const { answers } = useAnswers(form.id);
-  const { addFormAnswer } = useUser();
+  const { addFormAnswers } = useUser();
   const history = useHistory();
 
-  const formAnswer = useMemo(() => ({
+  const formAnswer: IFormAnswers = useMemo(() => ({
     id: form.id,
-    key: '?',
-    userUid: '?',
-    uid: '?',
     answers: Object.values(answers),
+    writer: BlobWriter.generate('formAnswer'),
   }), [form, answers]);
 
   async function submit() {
-    await addFormAnswer(formAnswer);
+    await addFormAnswers(formAnswer);
     localStorage.removeItem(`grenzexpress-${form.id}`);
     history.replace('/');
   }

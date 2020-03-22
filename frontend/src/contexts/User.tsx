@@ -1,23 +1,24 @@
-import React, { useContext } from 'react';
+import React, {
+  createContext, useContext, useEffect, useState,
+} from 'react';
 
 import { BlobWriter } from '../api';
 import { IFormAnswers } from '../types/answers';
-import { IUserData } from '../types/user';
+import { IUser } from '../types/user';
 
-const defaultUser: IUserData = {
-  uid: '?',
-  answeredForms: [],
-  secret: '?',
-  sharedAnswers: [],
-  token: '?',
-};
+function createUser(): IUser {
+  return {
+    answeredForms: [],
+    sharedAnswers: [],
+  };
+}
 
 interface UserContext {
-  user: IUserData;
+  user: IUser;
   addFormAnswers(answers: IFormAnswers): Promise<void>;
 }
-const UserContext = React.createContext<UserContext>({
-  user: defaultUser,
+const UserContext = createContext<UserContext>({
+  user: createUser(),
   addFormAnswers() {
     throw new Error('Missing user context');
   },
@@ -25,27 +26,43 @@ const UserContext = React.createContext<UserContext>({
 
 export const useUser = () => useContext(UserContext);
 
+function loadUser(): IUser {
+  const json = localStorage.getItem('grenzexpress-user');
+  if (!json) {
+    console.info('No user account found, creating a new one');
+    return createUser();
+  }
+  try {
+    const account = JSON.parse(json);
+    return {
+      sharedAnswers: account.sharedAnswers,
+      answeredForms: account.answeredForms.map((formAnswers: any) => ({
+        ...formAnswers,
+        writer: BlobWriter.fromJSON('formAnswer', formAnswers.writer),
+      })),
+    };
+  } catch (err) {
+    console.error('Failed to load user account', err, json);
+    return createUser();
+  }
+}
+
 export const WithUser = ({ children }: React.PropsWithChildren<{}>) => {
-  const [user, setUser] = React.useState<IUserData>(() => {
-    let initialUser = defaultUser;
-    try {
-      initialUser = JSON.parse(localStorage.getItem('grenzexpress-user') || '');
-    } catch {
-      console.log('could not load user, initializing');
-    }
+  const [user, setUser] = useState(loadUser);
 
-    return initialUser;
-  });
-
-  React.useEffect(() => {
+  useEffect(() => {
     localStorage.setItem('grenzexpress-user', JSON.stringify(user));
   }, [user]);
 
-  async function addFormAnswers(answers: IFormAnswers) {
-    const blob = BlobWriter.generate('formAnswer');
-    await blob.set({ answers: answers.answers });
-    answers.key = blob.toJSON();
-    setUser((u) => ({ ...u, answeredForms: [...u.answeredForms, answers] }));
+  async function addFormAnswers(formAnswers: IFormAnswers) {
+    if (!formAnswers.writer.isWriter()) {
+      throw new Error('Unable to write readonly form answers');
+    }
+    await formAnswers.writer.set({
+      id: formAnswers.id,
+      answers: formAnswers.answers,
+    });
+    setUser((u) => ({ ...u, answeredForms: [...u.answeredForms, formAnswers] }));
   }
 
   return (

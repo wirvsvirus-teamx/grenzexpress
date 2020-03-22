@@ -40,7 +40,7 @@ export const FinishedForm = ({
     (answerID: any) => formAnswer.answers.find((it) => it.id === answerID) as any,
   );
 
-  const token = window.btoa(`${formAnswer.uid}@${formAnswer.key}`);
+  const token = `${formAnswer.writer.publicKey.base64url}@${formAnswer.writer.symmetricKey.base64url}`;
   const innerUrl = `http://localhost/load-form#${token}`;
   const url = `/qr#${innerUrl}`;
 

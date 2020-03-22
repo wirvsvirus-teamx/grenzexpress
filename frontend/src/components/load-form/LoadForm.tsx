@@ -1,32 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 
+import { BlobReader } from '../../api';
+import { PublicKey, SymmetricKey } from '../../crypto';
 import { IFormAnswers } from '../../types/answers';
 import { FinishedForm } from '../finished-form/FinishedForm';
 
 export const LoadForm = () => {
-  const data = window.atob(window.location.hash.slice(1));
-  const [publicKey, secret] = data.split('@');
+  const [formAnswers, setFormAnswers] = useState<IFormAnswers>();
 
-  // Load some magic from server
+  const { hash, ...location } = useLocation();
+  const [publicKey, symmetricKey] = hash.slice(1).split('@');
+  useEffect(() => {
+    console.log({ hash, ...location });
 
-  const result: IFormAnswers = {
-    id: 'pass-border',
-    key: '?',
-    uid: '?',
-    userUid: '?',
-    answers: [
-      {
-        type: 'text-input',
-        id: 'first-name',
-        value: 'Max',
+    setFormAnswers(undefined);
+
+    const blob = new BlobReader(
+      'formAnswer',
+      SymmetricKey.fromBase64url(symmetricKey),
+      PublicKey.fromBase64url(publicKey),
+    );
+
+    blob.get().then((data) => {
+      setFormAnswers({
+        writer: blob,
+        ...data,
+      });
+    }).catch(
+      (err) => {
+        console.error('Failed to load form answers:', err);
       },
-      {
-        type: 'text-input',
-        id: 'last-name',
-        value: 'Mustermann',
-      },
-    ],
-  };
+    );
+  }, [symmetricKey, publicKey, hash, location]);
 
-  return <FinishedForm formAnswer={result} />;
+  if (!formAnswers) {
+    return <h1>Loading...</h1>;
+  }
+
+  return <FinishedForm formAnswer={formAnswers} />;
 };
