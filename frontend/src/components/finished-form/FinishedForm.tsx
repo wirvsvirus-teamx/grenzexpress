@@ -1,13 +1,14 @@
 import {
+  Button,
   Card, CardActions, CardContent, CardHeader, createStyles, Grid, IconButton,
-  makeStyles, Typography, Button,
+  makeStyles, Typography,
 } from '@material-ui/core';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import React from 'react';
+import { useHistory } from 'react-router';
 
 import { forms } from '../../data/forms';
 import { IFormAnswer } from '../../types';
-import { useHistory } from 'react-router';
 
 const useStyles = makeStyles(() => createStyles({
   red: {
@@ -31,7 +32,7 @@ export const FinishedForm = ({ formAnswer }: { formAnswer: IFormAnswer }) => {
 
   const { state, message } = form?.validate((answerID: any) => formAnswer.answers.find((it) => it.id === answerID) as any);
 
-  const token = window.btoa(formAnswer.uid + "@" + formAnswer.key);
+  const token = window.btoa(`${formAnswer.uid}@${formAnswer.key}`);
   const innerUrl = `http://localhost/load-form#${token}`;
   const url = `/qr#${innerUrl}`;
 
@@ -45,12 +46,12 @@ export const FinishedForm = ({ formAnswer }: { formAnswer: IFormAnswer }) => {
     <Grid item sm={4} xs={12}>
       <Card>
         <CardHeader
-          subheader="September 14, 2016"
+          subheader=""
           title={form.title}
         />
         <CardContent className={classes[color]}>
-        <FiberManualRecordIcon />
-        <p>
+          <FiberManualRecordIcon />
+          <p>
             {message}
           </p>
           {state === 'unknown' && (
@@ -59,10 +60,10 @@ export const FinishedForm = ({ formAnswer }: { formAnswer: IFormAnswer }) => {
           </p>
           )}
         </CardContent>
-        <CardActions >
-            <Button variant="contained" color="primary" onClick={() => history.push(url)}>
-              Vorzeigen
-            </Button>
+        <CardActions>
+          <Button color="primary" variant="contained" onClick={() => history.push(url)}>
+            Vorzeigen
+          </Button>
         </CardActions>
       </Card>
     </Grid>

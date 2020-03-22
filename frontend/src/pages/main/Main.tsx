@@ -23,6 +23,9 @@ export const Main = () => {
                 <Typography component="h2" variant="h5">
                   {form.title}
                 </Typography>
+                <p>
+                  Erstellen sie ein Formular, um schnell und einfach die Grenze zu passieren!
+                </p>
               </CardContent>
               <CardActions>
                 <Link to={`/form/${form.id}`}>
