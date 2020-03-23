@@ -19,7 +19,8 @@ export const ShowQR = () => (
             <QRCode
               size={396}
               style={{
-                width: '396px', height: '396px', maxWidth: '100%', maxHeight: '100%',
+                width: '100%', 
+                height: 'auto'
               }}
               value={window.location.hash.slice(1)}
             />
