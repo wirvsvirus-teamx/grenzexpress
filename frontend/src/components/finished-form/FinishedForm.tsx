@@ -64,8 +64,10 @@ export const FinishedForm = ({
 
   if (!form) throw new Error(`Form with id ${formAnswer.id} not found`);
 
+  console.log(formAnswer);
+  
   const { state, message } = form?.validate(
-    (answerID: any) => formAnswer.answers.find((it) => it.id === answerID) as any,
+    (answerID: string) => formAnswer.answers.find((it) => it.id === answerID) as any,
   );
 
   const token = `${formAnswer.writer.publicKey.base64url}@${formAnswer.writer.symmetricKey.base64url}`;

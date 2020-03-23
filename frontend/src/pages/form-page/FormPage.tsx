@@ -58,7 +58,8 @@ export const FormPage: FunctionComponent<{}> = () => {
     return <NotFound />;
   }
 
-  const step = +(_step ?? 0);
+  // if the user reloads the page, restart from zero
+  let step = formId in answersByForm ? +(_step ?? 0) : 0;
 
   if (step >= form.pages.length) {
     return <FormSubmit form={form} />;
@@ -147,7 +148,8 @@ export const FormSubmit = ({ form }: { form: IForm }) => {
 
   async function submit() {
     await addFormAnswers(formAnswer);
-    localStorage.removeItem(`grenzexpress-${form.id}`);
+    // localStorage.removeItem(`grenzexpress-${form.id}`);
+    delete answersByForm[form.id];
     history.replace('/');
   }
 
@@ -180,19 +182,26 @@ export const FormSubmit = ({ form }: { form: IForm }) => {
   );
 };
 
+let answersByForm = {} as { [formID: string]: { [id: string]: IAnswer } };
 const useAnswers = (form: string) => {
   const [answers, setAnswers] = useState<{ [id: string]: IAnswer }>(() => {
     let initial = {};
 
-    try {
+    // Disable form caching as it causes problems with larger datasets
+    /*try {
       initial = JSON.parse(localStorage.getItem(`grenzexpress-${form}`) || '');
-    } catch { console.log('page answers initialized'); }
+    } catch { console.log('page answers initialized'); }*/
+
+    // instead cache locally
+    if(answersByForm[form])
+      return answersByForm[form];
 
     return initial;
   });
 
   useEffect(() => {
-    localStorage.setItem(`grenzexpress-${form}`, JSON.stringify(answers));
+    // localStorage.setItem(`grenzexpress-${form}`, JSON.stringify(answers));
+    answersByForm[form] = answers;
   }, [form, answers]);
 
   const setAnswer = useCallback((answer: IAnswer) => {
