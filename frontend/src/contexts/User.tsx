@@ -50,14 +50,16 @@ function loadUser(): IUser {
 export const WithUser = ({ children }: React.PropsWithChildren<{}>) => {
   const [user, setUser] = useState(loadUser);
 
-
   useEffect(() => {
     // Remove images, as they cause localStorage to overflow
-    const storedUser = { ...user, answeredForms: [ ...user.answeredForms.map(answer => ({
-      ...answer,
-      answers: answer.answers.filter(a => a.type !== 'upload-form' && a.type !== 'signature')
-    })) ] };
-    
+    const storedUser = {
+      ...user,
+      answeredForms: [...user.answeredForms.map((answer) => ({
+        ...answer,
+        answers: answer.answers.filter((a) => a.type !== 'upload-form' && a.type !== 'signature'),
+      }))],
+    };
+
     localStorage.setItem('grenzexpress-user', JSON.stringify(storedUser));
   }, [user]);
 
