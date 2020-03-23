@@ -59,7 +59,7 @@ export const FormPage: FunctionComponent<{}> = () => {
   }
 
   // if the user reloads the page, restart from zero
-  let step = formId in answersByForm ? +(_step ?? 0) : 0;
+  const step = formId in answersByForm ? +(_step ?? 0) : 0;
 
   if (step >= form.pages.length) {
     return <FormSubmit form={form} />;
@@ -185,16 +185,15 @@ export const FormSubmit = ({ form }: { form: IForm }) => {
 let answersByForm = {} as { [formID: string]: { [id: string]: IAnswer } };
 const useAnswers = (form: string) => {
   const [answers, setAnswers] = useState<{ [id: string]: IAnswer }>(() => {
-    let initial = {};
+    const initial = {};
 
     // Disable form caching as it causes problems with larger datasets
-    /*try {
+    /* try {
       initial = JSON.parse(localStorage.getItem(`grenzexpress-${form}`) || '');
     } catch { console.log('page answers initialized'); }*/
 
     // instead cache locally
-    if(answersByForm[form])
-      return answersByForm[form];
+    if (answersByForm[form]) return answersByForm[form];
 
     return initial;
   });

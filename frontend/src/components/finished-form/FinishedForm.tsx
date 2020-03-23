@@ -65,7 +65,7 @@ export const FinishedForm = ({
   if (!form) throw new Error(`Form with id ${formAnswer.id} not found`);
 
   console.log(formAnswer);
-  
+
   const { state, message } = form?.validate(
     (answerID: string) => formAnswer.answers.find((it) => it.id === answerID) as any,
   );
